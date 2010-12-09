@@ -1,0 +1,3 @@
+SUBDIRS = gry
+
+MAINTAINERCLEANFILES = Makefile.in
