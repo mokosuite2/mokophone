@@ -12,8 +12,8 @@
 #include "globals.h"
 #include "gsm.h"
 #include "simauthwin.h"
-//#include "callwin.h"
-//#include "phonewin.h"
+#include "callwin.h"
+#include "phonewin.h"
 
 
 static SimAuthWin *sim_auth = NULL;
@@ -243,7 +243,7 @@ static void sim_auth_hide(void)
     }
 }
 
-static void offline_mode_changed(GObject *settings, const char* section, const char* key, GValue* value)
+static void offline_mode_changed(RemoteConfigService *config, const char* section, const char* key, GValue* value)
 {
     if (!strcmp(section, "phone") && !strcmp(key, "offline_mode")) {
         offline_mode = g_value_get_boolean(value);
@@ -378,7 +378,7 @@ void gsm_offline(void)
     online_offline();
 }
 
-void gsm_init(RemoteConfigService *config)
+void gsm_init(void)
 {
     ousaged_usage_resource_changed_connect(resource_changed, NULL);
     ousaged_usage_resource_available_connect(resource_available, NULL);
@@ -417,10 +417,10 @@ void gsm_init(RemoteConfigService *config)
     }
 
     // offline mode
-    remote_config_service_get_bool(config, "phone", "offline_mode", &offline_mode);
+    remote_config_service_get_bool(phone_config, "phone", "offline_mode", &offline_mode);
 
     // offline mode listener
-    g_signal_connect(G_OBJECT(config), "Changed", G_CALLBACK(offline_mode_changed), NULL);
+    g_signal_connect(G_OBJECT(phone_config), "changed", G_CALLBACK(offline_mode_changed), NULL);
 
     // ping fsogsmd
     ogsmd_device_get_device_status(NULL, NULL);

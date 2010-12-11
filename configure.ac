@@ -62,6 +62,10 @@ PKG_CHECK_MODULES(MOKOSUITE,
   mokosuite-pim >= $MOKOSUITE_REQUIRED
 )
 
+PKG_CHECK_MODULES(ALSA, alsa)
+AC_SUBST(ALSA_CFLAGS)
+AC_SUBST(ALSA_LIBS)
+
 dnl edje_cc for edj files
 AC_ARG_WITH(edje-cc,
 [  --with-edje-cc=PATH	specify a specific path to edje_cc],

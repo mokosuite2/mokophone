@@ -23,12 +23,15 @@
 #include <mokosuite/utils/dbus.h>
 #include <mokosuite/ui/gui.h>
 #include <mokosuite/pim/pim.h>
-#include <mokosuite/pim/messagesdb.h>
+#include <mokosuite/pim/contactsdb.h>
 #include <freesmartphone-glib/freesmartphone-glib.h>
 #include <phone-utils.h>
 
 #include "globals.h"
 #include "gsm.h"
+#include "sound.h"
+#include "phonewin.h"
+#include "callwin.h"
 
 #define MOKOPHONE_NAME               "org.mokosuite.phone"
 #define MOKOPHONE_CONFIG_PATH        MOKOSUITE_DBUS_PATH "/Phone/Config"
@@ -76,8 +79,21 @@ int main(int argc, char* argv[])
 
     // TODO phone service
 
+    /* inizializza il database dei contatti */
+    char* db_path = g_strdup_printf("%s/.config/mokosuite/contacts.db", g_get_home_dir());
+    contactsdb_init(db_path);
+    g_free(db_path);
+
     // gsm init
-    gsm_init(phone_config);
+    gsm_init();
+
+    sound_init();
+
+    phone_win_init();
+    phone_call_win_init();
+
+    // TEST
+    phone_win_activate(SECTION_PHONE, FALSE);
 
     elm_run();
     elm_shutdown();

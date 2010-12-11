@@ -1,37 +1,3578 @@
 #define SCALE_FACTOR        2
+#define COLOR_GRAY 150 150 150 255;
+#define COLOR_LIGHT_GRAY 245 245 245 255;
+#define COLOR_DARK_GRAY 79 79 79 255;
+#define COLOR_WHITE 255 255 255 255;
+#define COLOR_ORANGE_SOLID 248 169 0 255;
+#define COLOR_RED 255 0 0 255;
+#define COLOR_GREEN 4 188 0 255;
+#define COLOR_GREEN_SEMI 4 188 0 128;
 
-#define COLOR_LIGHT_GRAY 245 245 245 255
-#define COLOR_DARK_GRAY 79 79 79 255
-#define COLOR_ORANGE_SOLID 248 169 0 255
-#define COLOR_GREEN 4 188 0 255
 
 collections {
-    group { name: "elm/genlist/item/thread/default";
-        alias: "elm/genlist/item_odd/thread/default";
-        data.item: "stacking" "above";
-        data.item: "selectraise" "on";
-        data.item: "labels" "elm.text elm.text.sub elm.text.right";
 
-        parts {
-            part { name: "event";
-                type: RECT;
-                repeat_events: 1;
-                description {
-                    state: "default" 0.0;
-                    color: 0 0 0 0;
+group { name: "elm/genlist/item/call/default";
+    alias: "elm/genlist/item_odd/call/default";
+    data.item: "stacking" "above";
+    data.item: "selectraise" "on";
+    data.item: "labels" "elm.text elm.text.right";
+    data.item: "icons" "elm.swallow.icon elm.swallow.end";
+
+    parts {
+        part { name: "event";
+            type: RECT;
+            repeat_events: 1;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 0;
+            }
+        }
+        part { name: "bg";
+            clip_to: "disclip";
+            mouse_events: 0;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                color: COLOR_LIGHT_GRAY;
+                rel1 {
+                    relative: 0.0 0.0;
+                    offset: 0 0;
+                }
+                rel2 {
+                    relative: 1.0 1.0;
+                    offset: 0 0;
                 }
             }
-            part { name: "bg";
-                clip_to: "disclip";
-                mouse_events: 0;
+            description {
+                state: "selected" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+                color: COLOR_ORANGE_SOLID;
+
+            }
+        }
+        part { name: "seperator";
+            mouse_events: 0;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                color: COLOR_DARK_GRAY;
+                rel1 {
+                    to: "bg";
+                    relative: 0.0 1.0;
+                    offset: 0 -3;
+                }rel2 {
+                    to: "bg";
+                    relative: 1.0 1.0;
+                    offset: 0 -2;
+                }
+
+            }
+
+        }
+        part { name: "elm.swallow.pad";
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                fixed: 1 0;
+                align: 0.0 0.5;
+                rel1 {
+                    relative: 0.0  0.0;
+                    offset:   4    4;
+                }
+                rel2 {
+                    relative: 0.0  1.0;
+                    offset:   4   -5;
+                }
+            }
+        }
+        part { name: "elm.swallow.icon";
+            clip_to: "disclip";
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                fixed: 1 0;
+                align: 0.0 0.5;
+                rel1 {
+                    to_x: "elm.swallow.pad";
+                    relative: 1.0  0.0;
+                    offset:   -1    4;
+                }
+                rel2 {
+                    to_x: "elm.swallow.pad";
+                    relative: 1.0  1.0;
+                    offset:   -1   -5;
+                }
+            }
+        }
+        part { name: "elm.swallow.end";
+            clip_to: "disclip";
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                fixed: 1 0;
+                align: 1.0 0.5;
+                aspect: 1.0 1.0;
+                aspect_preference: VERTICAL;
+                rel1 {
+                    relative: 1.0  0.0;
+                    offset:   -5    10;
+                }
+                rel2 {
+                    relative: 1.0  0.5;
+                    offset:   -10   -5;
+                }
+            }
+        }
+        part { name: "elm.text";
+            clip_to: "disclip";
+            type:           TEXT;
+            mouse_events:   0;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                rel1 {
+                    to_x:     "elm.swallow.icon";
+                    relative: 1.0  0.0;
+                    offset:   5*SCALE_FACTOR 4;
+                }
+                rel2 {
+                    to_x:     "elm.swallow.end";
+                    relative: 0.0  1.0;
+                    offset:   -1 -5;
+                }
+                color: 0 0 0 255;
+                color3: 0 0 0 0;
+                text {
+                    font: "redensek";
+                    size: 10;
+                    elipsis: 0.0;
+                    min: 0 1;
+                    align: 0.0 0.5;
+                }
+            }
+        }
+        part { name: "elm.text.right";
+            clip_to: "disclip";
+            type:           TEXT;
+            mouse_events:   0;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                //               min: 16 16;
+                rel1 {
+                    relative: 0.7  0.5;
+                    offset:   -5    5*SCALE_FACTOR;
+                }
+                rel2 {
+                    relative: 1.0  1.0;
+                    offset:   -5*SCALE_FACTOR   -5;
+                }
+                color: COLOR_DARK_GRAY;
+                color3: 0 0 0 0;
+                text {
+                    font: "redensek";
+                    size: 9;
+                    elipsis: 0.0;
+                    min: 0 1;
+                    align: 1.0 0.5;
+                }
+            }
+        }
+        part { name: "disclip";
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                rel1.to: "bg";
+                rel2.to: "bg";
+            }
+            description {
+                state: "disabled" 0.0;
+                inherit: "default" 0.0;
+                color: 255 255 255 64;
+            }
+        }
+    }
+
+    programs {
+        // signal: elm,state,%s,active
+        //   a "check" item named %s went active
+        // signal: elm,state,%s,passive
+        //   a "check" item named %s went passive
+        // default is passive
+
+        program {
+            name:    "go_active";
+            signal:  "elm,state,selected";
+            source:  "elm";
+            action:  STATE_SET "selected" 0.0;
+            target:  "bg";
+            target:  "elm.text";
+            target:  "elm.text.right";
+        }
+        program {
+            name:    "go_passive";
+            signal:  "elm,state,unselected";
+            source:  "elm";
+            action:  STATE_SET "default" 0.0;
+            target:  "bg";
+            target:  "elm.text";
+            target:  "elm.text.right";
+            transition: LINEAR 0.1;
+        }
+        program {
+            name:    "go_disabled";
+            signal:  "elm,state,disabled";
+            source:  "elm";
+            action:  STATE_SET "disabled" 0.0;
+            target:  "disclip";
+        }
+        program {
+            name:    "go_enabled";
+            signal:  "elm,state,enabled";
+            source:  "elm";
+            action:  STATE_SET "default" 0.0;
+            target:  "disclip";
+        }
+    }
+} /* elm/genlist/item/call/default */
+
+
+group { name: "elm/genlist/item/call_sub/default";
+    alias: "elm/genlist/item_odd/call_sub/default";
+    data.item: "stacking" "above";
+    data.item: "selectraise" "on";
+    data.item: "labels" "elm.text elm.text.sub elm.text.right";
+    data.item: "icons" "elm.swallow.icon elm.swallow.end";
+
+    parts {
+        part { name: "event";
+            type: RECT;
+            repeat_events: 1;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 0;
+            }
+        }
+        part { name: "bg";
+            clip_to: "disclip";
+            mouse_events: 0;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                color: COLOR_LIGHT_GRAY;
+                rel1 {
+                    relative: 0.0 0.0;
+                    offset: 0 0;
+                }
+                rel2 {
+                    relative: 1.0 1.0;
+                    offset: 0 0;
+                }
+            }
+            description {
+                state: "selected" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+                color: COLOR_ORANGE_SOLID;
+
+            }
+        }
+        part { name: "seperator";
+            mouse_events: 0;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                color: COLOR_DARK_GRAY;
+                rel1 {
+                    to: "bg";
+                    relative: 0.0 1.0;
+                    offset: 0 -3;
+                }rel2 {
+                    to: "bg";
+                    relative: 1.0 1.0;
+                    offset: 0 -2;
+                }
+
+            }
+
+        }
+        part { name: "elm.swallow.pad";
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                fixed: 1 0;
+                align: 0.0 0.5;
+                rel1 {
+                    relative: 0.0  0.0;
+                    offset:   4    4;
+                }
+                rel2 {
+                    relative: 0.0  1.0;
+                    offset:   4   -5;
+                }
+            }
+        }
+        part { name: "elm.swallow.icon";
+            clip_to: "disclip";
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                fixed: 1 0;
+                align: 0.0 0.5;
+                rel1 {
+                    to_x: "elm.swallow.pad";
+                    relative: 1.0  0.0;
+                    offset:   -1    4;
+                }
+                rel2 {
+                    to_x: "elm.swallow.pad";
+                    relative: 1.0  1.0;
+                    offset:   -1   -5;
+                }
+            }
+        }
+        part { name: "elm.swallow.end";
+            clip_to: "disclip";
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                fixed: 1 0;
+                align: 1.0 0.5;
+                aspect: 1.0 1.0;
+                aspect_preference: VERTICAL;
+                rel1 {
+                    relative: 1.0  0.0;
+                    offset:   -5    10;
+                }
+                rel2 {
+                    relative: 1.0  0.5;
+                    offset:   -10   -5;
+                }
+            }
+        }
+        part { name: "elm.text";
+            clip_to: "disclip";
+            type:           TEXT;
+            mouse_events:   0;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                rel1 {
+                    to_x:     "elm.swallow.icon";
+                    relative: 1.0  0.0;
+                    offset:   4 4;
+                }
+                rel2 {
+                    to_x:     "elm.swallow.end";
+                    relative: 0.0  0.5;
+                    offset:   -1 0;
+                }
+                color: 0 0 0 255;
+                color3: 0 0 0 0;
+                text {
+                    font: "redensek";
+                    size: 10;
+                    elipsis: 0.0;
+                    min: 0 1;
+                    align: 0.0 1.0;
+                }
+            }
+        }
+        part { name: "elm.text.sub";
+            clip_to: "disclip";
+            type:           TEXT;
+            mouse_events:   0;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                //               min: 16 16;
+                rel1 {
+                    to_x:     "elm.swallow.icon";
+                    relative: 1.0  0.5;
+                    offset:   4 4;
+                }
+                rel2 {
+                    to_x:     "elm.text.right";
+                    relative: 0.0  1.0;
+                    offset:   -1 -5;
+                }
+                color: COLOR_DARK_GRAY;
+                color3: 0 0 0 0;
+                text {
+                    font: "redensek";
+                    size: 9;
+                    elipsis: 0.0;
+                    min: 0 1;
+                    align: 0.0 0.0;
+                }
+            }
+        }
+        part { name: "elm.text.right";
+            clip_to: "disclip";
+            type:           TEXT;
+            mouse_events:   0;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                //               min: 16 16;
+                rel1 {
+                    relative: 0.7  0.5;
+                    offset:   -5    5*SCALE_FACTOR;
+                }
+                rel2 {
+                    relative: 1.0  1.0;
+                    offset:   -5*SCALE_FACTOR   -5;
+                }
+                color: COLOR_DARK_GRAY;
+                color3: 0 0 0 0;
+                text {
+                    font: "redensek";
+                    size: 9;
+                    elipsis: 0.0;
+                    min: 0 1;
+                    align: 1.0 0.5;
+                }
+            }
+        }
+        part { name: "disclip";
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                rel1.to: "bg";
+                rel2.to: "bg";
+            }
+            description {
+                state: "disabled" 0.0;
+                inherit: "default" 0.0;
+                color: 255 255 255 64;
+            }
+        }
+    }
+
+    programs {
+        // signal: elm,state,%s,active
+        //   a "check" item named %s went active
+        // signal: elm,state,%s,passive
+        //   a "check" item named %s went passive
+        // default is passive
+
+        program {
+            name:    "go_active";
+            signal:  "elm,state,selected";
+            source:  "elm";
+            action:  STATE_SET "selected" 0.0;
+            target:  "bg";
+            target:  "elm.text";
+            target:  "elm.text.sub";
+            target:  "elm.text.right";
+        }
+        program {
+            name:    "go_passive";
+            signal:  "elm,state,unselected";
+            source:  "elm";
+            action:  STATE_SET "default" 0.0;
+            target:  "bg";
+            target:  "elm.text";
+            target:  "elm.text.sub";
+            target:  "elm.text.right";
+            transition: LINEAR 0.1;
+        }
+        program {
+            name:    "go_disabled";
+            signal:  "elm,state,disabled";
+            source:  "elm";
+            action:  STATE_SET "disabled" 0.0;
+            target:  "disclip";
+        }
+        program {
+            name:    "go_enabled";
+            signal:  "elm,state,enabled";
+            source:  "elm";
+            action:  STATE_SET "default" 0.0;
+            target:  "disclip";
+        }
+    }
+} /* elm/genlist/item/call_sub/default */
+
+
+group { name: "mokosuite/phone/main";
+    parts {
+
+        part { name: "button1";
+            type: RECT;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                color: 255 255 255 255;
+                rel1 {
+                    relative: 0 0;
+                    offset: 0 0;
+                }
+                rel2 {
+                    relative: 0.32 0.12;
+                    offset: 0 0;
+                }
+            }
+            description {
+                state: "clicked" 0.0;
+                inherit: "default" 0.0;
+                color: COLOR_ORANGE_SOLID;
+            }
+        }
+
+        part { name: "button2";
+            type: RECT;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                color: 255 255 255 255;
+                rel1 {
+                    relative: 0.33 0;
+                    offset: 0 0;
+                }
+                rel2 {
+                    relative: 0.66 0.12;
+                    offset: 0 0;
+                }
+            }
+            description {
+                state: "clicked" 0.0;
+                inherit: "default" 0.0;
+                color: COLOR_ORANGE_SOLID;
+            }
+        }
+        part { name: "button3";
+            type: RECT;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                align: 1.0 0.0;
+                color: 255 255 255 255;
+                rel1 {
+                    relative: 0.67 0;
+                    offset: 0 0;
+                }
+                rel2 {
+                    relative: 1.0 0.12;
+                    offset: 0 0;
+                }
+            }
+            description {
+                state: "clicked" 0.0;
+                align: 0.5 0.5;
+                inherit: "default" 0.0;
+                color: COLOR_ORANGE_SOLID;
+            }
+        }
+        part { name: "text1";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 1 1 1 255;
+                rel1 {
+                    relative: 0.0 0.0;
+                    to: "button1";
+                }
+                rel2 {
+                    relative: 1.0 1.0;
+                    to: "button1";
+                }
+                text {
+                    //text: "1";
+                    font: "redensek:style=bold:color=000";
+                    size: 10*SCALE_FACTOR;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part { name: "text2";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 1 1 1 255;
+                rel1 {
+                    relative: 0.0 0.0;
+                    offset: 0 0;
+                    to: "button2";
+                }
+                rel2 {
+                    relative: 1.0 1.0;
+                    offset: 0 0;
+                    to: "button2";
+                }
+                text {
+                    //text: "2";
+                    font: "redensek:style=bold";
+                    size: 10*SCALE_FACTOR;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part { name: "text3";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 1 1 1 255;
+                rel1 {
+                    relative: 0.0 0.0;
+                    offset: 0 0;
+                    to: "button3";
+                }
+                rel2 {
+                    relative: 1.0 1.0;
+                    offset: 0 0;
+                    to: "button3";
+                }
+                text {
+                    //text: "3";
+                    font: "redensek:style=bold";
+                    size: 10*SCALE_FACTOR;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+
+        part { name: "pager";
+            type: SWALLOW;
+            mouse_events: 1;
+            repeat_events: 1;
+            description {
+                state: "default" 0.0;
+                aspect_preference: BOTH;
+                rel1 {
+                    relative: 0.0 0.12;
+                    offset: 0 0;
+                }
+                rel2 {
+                    relative: 1.0 1.0;
+                    offset: 0 0;
+                }
+            }
+        }
+
+        part { name: "seperator";
+            mouse_events: 0;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                color: COLOR_ORANGE_SOLID;
+                rel1 {
+                    to: "pager";
+                    relative: 0.0 0.0;
+                    offset: 0 -2;
+                }rel2 {
+                    to: "pager";
+                    relative: 1.0 0.0;
+                    offset: 0 0;
+                }
+
+            }
+
+        }
+
+        part { name: "menu_hover";
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                rel1 {
+                    relative: 0.0 1.0;
+                }
+                rel2 {
+                    relative: 1.0 1.0;
+                }
+            }
+            description {
+                state: "active" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+
+        }
+
+    }
+
+    programs {
+
+        program {
+            name: "menu_hover_show";
+            signal: "show";
+            source: "menu_hover";
+            action: STATE_SET "active" 0.0;
+            target: "menu_hover";
+        }
+        program {
+            name: "menu_hover_hide";
+            signal: "hide";
+            source: "menu_hover";
+            action: STATE_SET "default" 0.0;
+            target: "menu_hover";
+        }
+        program {
+            name: "button1_clicked";
+            signal: "mouse,up,1";
+            source: "button1";
+            action: SIGNAL_EMIT "1" "tab_change";
+        }
+        program {
+            name: "button2_clicked";
+            signal: "mouse,up,1";
+            source: "button2";
+            action: SIGNAL_EMIT "2" "tab_change";
+        }
+        program {
+            name: "button3_clicked";
+            signal: "mouse,up,1";
+            source: "button3";
+            action: SIGNAL_EMIT "3" "tab_change";
+        }
+
+        program {
+            name: "button1_click";
+            signal: "mouse,down,1";
+            source: "button1";
+            action: STATE_SET "clicked" 0.0;
+            target: "button1";
+        }
+        program {
+            name: "button2_click";
+            signal: "mouse,down,1";
+            source: "button2";
+            action: STATE_SET "clicked" 0.0;
+            target: "button2";
+        }
+        program {
+            name: "button3_click";
+            signal: "mouse,down,1";
+            source: "button3";
+            action: STATE_SET "clicked" 0.0;
+            target: "button3";
+        }
+
+        program {
+            name: "button1_unclick";
+            signal: "mouse,up,1";
+            source: "button1";
+            script {
+                set_state(PART:"button2", "default", 0.0);
+                set_state(PART:"button3", "default", 0.0);
+            }
+        }
+        program {
+            name: "button2_unclick";
+            signal: "mouse,up,1";
+            source: "button2";
+            script {
+                set_state(PART:"button1", "default", 0.0);
+                set_state(PART:"button3", "default", 0.0);
+            }
+        }
+        program {
+            name: "button3_unclick";
+            signal: "mouse,up,1";
+            source: "button3";
+            script {
+                set_state(PART:"button1", "default", 0.0);
+                set_state(PART:"button2", "default", 0.0);
+            }
+        }
+    }
+}
+
+group { name: "mokosuite/phone/dialer";
+
+    images {
+        image: "undo.png" COMP;
+    }
+
+    parts {
+
+        part { name: "bg_number";
+            type: RECT;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                rel1 {
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    relative: 0.8 0.2;
+                }
+                color: 0 0 0 0;
+            }
+
+            description {
+                state: "clicked" 0.0;
+                inherit: "default" 0.0;
+                color: COLOR_GREEN;
+            }
+
+        }
+        part { name: "text_number";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 1 1 1 255;
+                rel1 {
+                    to: "bg_number";
+                    relative: 0.05 0.0;
+                }
+                rel2 {
+                    to: "bg_number";
+                    relative: 1.0 1.0;
+                }
+                text {
+                    //text: "12345678";
+                    font: "redensek:style=bold";
+                    size: 15*SCALE_FACTOR;
+                    align: 0 0.5;
+                }
+            }
+
+            description {
+                state: "clicked" 0.0;
+                inherit: "default" 0.0;
+                color: COLOR_WHITE;
+            }
+
+        }
+
+        part { name: "bg_delete";
+            type: RECT;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                rel1 {
+                    to_x: "button_delete";
+                    to_y: "bg_number";
+                }
+                rel2 {
+                    to_x: "button_delete";
+                    to_y: "bg_number";
+                }
+                color: 0 0 0 0;
+            }
+
+            description {
+                state: "clicked" 0.0;
+                inherit: "default" 0.0;
+                color: COLOR_GREEN;
+            }
+
+        }
+
+        part { name: "button_delete";
+            type: IMAGE;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                aspect: 1 1;
+                aspect_preference: BOTH;
+                image {
+                    normal: "undo.png";
+                }
+                rel1 {
+                    relative: 0.8 0;
+                    offset: 0 5;
+                }
+                rel2 {
+                    relative: 1.0 0.2;
+                    offset: 0 -5;
+                }
+            }
+        }
+
+        part { name: "keypad";
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                rel1 {
+                    relative: 0 0.2;
+                }
+                rel2 {
+                    relative: 1 1;
+                }
+            }
+        }
+
+    }
+
+    programs {
+
+        program { name: "button_delete_mouse_down";
+            signal: "mouse,down,1";
+            source: "bg_delete";
+            action: STATE_SET "clicked" 0.0;
+            target: "bg_delete";
+        }
+
+        program { name: "button_delete_mouse_up";
+            signal: "mouse,up,1";
+            source: "bg_delete";
+            action: STATE_SET "default" 0.0;
+            target: "bg_delete";
+        }
+
+        program { name: "bg_number_mouse_down";
+            signal: "mouse,down,1";
+            source: "bg_number";
+            action: STATE_SET "clicked" 0.0;
+            target: "bg_number";
+            target: "text_number";
+        }
+
+        program { name: "bg_number_mouse_up";
+            signal: "mouse,up,1";
+            source: "bg_number";
+            action: STATE_SET "default" 0.0;
+            target: "bg_number";
+            target: "text_number";
+        }
+
+
+    }
+}
+
+group { name: "mokosuite/phone/call/incoming";
+    parts {
+
+        part {
+            name: "bg";
+            type: RECT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: COLOR_ORANGE_SOLID;
+                min: 210*SCALE_FACTOR 100*SCALE_FACTOR;
+                rel1 { relative: 0 0; }
+                rel2 { relative: 1.0 1.0; }
+            }
+            description {
+                state: "off" 0.0;
+                inherit: "default" 0.0;
+                color: 0 0 0 0;
+            }
+        }
+
+        part {
+            name: "name";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 255;
+                rel1 {
+                    to: "bg";
+                    relative: 0.02 0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 0.97 0.15;
+                }
+                text {
+                    text: "(name)";
+                    font: "redensek:style=bold";
+                    size: 10*SCALE_FACTOR;
+                    align: 0.0 0.5;
+                }
+            }
+        }
+
+        part {
+            name: "number";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 255;
+                rel1 {
+                    to: "bg";
+                    relative: 0.03 0.15;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 0.97 0.25;
+                }
+                text {
+                    text: "+1234567890";
+                    font: "redensek:style=bold";
+                    size: 10*SCALE_FACTOR;
+                    align: 0.0 0.5;
+                }
+            }
+        }
+
+        part {
+            name: "slider";
+            type: GROUP;
+            mouse_events: 1;
+            source: "slider";
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 0;
+                rel1 {
+                    to: "bg";
+                    relative: 0.03 0.32;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 0.97 0.59;
+                }
+            }
+        }
+
+        part {
+            name: "reject";
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 0;
+                rel1 {
+                    to: "bg";
+                    relative: 0.03 0.64;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 0.97 1.0;
+                }
+            }
+        }
+
+
+    } /* parts */
+
+    programs {
+
+        program {
+            name: "blink_off";
+            signal: "blink,off";
+            source: "call";
+            action: STATE_SET "off" 0.0;
+            target: "bg";
+        }
+
+        program {
+            name: "blink_on";
+            signal: "blink,on";
+            source: "call";
+            action: STATE_SET "default" 0.0;
+            target: "bg";
+        }
+
+    }   /* programs */
+
+}
+
+group { name: "mokosuite/phone/call/active";
+    parts {
+
+        part {
+            name: "bg";
+            type: RECT;
+            mouse_events: 1;
+            repeat_events: 1;
+            description {
+                state: "default" 0.0;
+                color: COLOR_GREEN;
+                // was: 210-45
+                min: 210*SCALE_FACTOR 100*SCALE_FACTOR;
+                rel1 { relative: 0 0; }
+                rel2 { relative: 1.0 1.0; }
+            }
+            description {
+                state: "hold" 0.0;
+                inherit: "default" 0.0;
+                color: COLOR_GRAY;
+            }
+            description {
+                state: "dialing" 0.0;
+                inherit: "default" 0.0;
+                color: COLOR_GREEN_SEMI;
+            }
+            description {
+                state: "release" 0.0;
+                inherit: "default" 0.0;
+                color: COLOR_RED;
+            }
+        }
+
+        part {
+            name: "name";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 255;
+                rel1 {
+                    to: "bg";
+                    relative: 0.02 0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 0.97 0.15;
+                }
+                text {
+                    text: "(name)";
+                    font: "redensek:style=bold";
+                    size: 10*SCALE_FACTOR;
+                    align: 0.0 0.5;
+                }
+            }
+        }
+
+        part {
+            name: "number";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 255;
+                rel1 {
+                    to: "bg";
+                    relative: 0.03 0.15;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 0.97 0.3;
+                }
+                text {
+                    text: "+1234567890";
+                    font: "redensek:style=bold";
+                    size: 10*SCALE_FACTOR;
+                    align: 0.0 0.5;
+                }
+            }
+        }
+
+        part {
+            name: "status";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 255;
+                rel1 {
+                    to: "bg";
+                    relative: 0.03 0.3;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 0.97 0.5;
+                }
+                text {
+                    text: "00:00:00";
+                    font: "redensek:style=bold";
+                    size: 10*SCALE_FACTOR;
+                    align: 0.0 0.5;
+                }
+            }
+        }
+
+        part {
+            name: "hold";
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 0;
+                rel1 {
+                    to: "bg";
+                    relative: 0 0.5;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 0.5 1.0;
+                }
+            }
+        }
+
+        part {
+            name: "release";
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 0;
+                rel1 {
+                    to: "bg";
+                    relative: 0.5 0.5;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1.0 1.0;
+                }
+            }
+        }
+
+
+    } /* parts */
+
+    programs {
+
+        program {
+            name: "active";
+            signal: "active";
+            source: "call";
+            action: STATE_SET "default" 0.0;
+            target: "bg";
+        }
+
+        program {
+            name: "hold";
+            signal: "hold";
+            source: "call";
+            action: STATE_SET "hold" 0.0;
+            target: "bg";
+        }
+
+        program {
+            name: "release";
+            signal: "release";
+            source: "call";
+            action: STATE_SET "release" 0.0;
+            target: "bg";
+        }
+
+        program {
+            name: "dialing";
+            signal: "dialing";
+            source: "call";
+            action: STATE_SET "dialing" 0.0;
+            target: "bg";
+        }
+
+        /*
+        program {
+            name: "select_state";
+            signal: "mouse,up,1";
+            source: "bg";
+            action: SIGNAL_EMIT "selected" "call";
+            TODO: automated switch on/off
+        }
+        */
+
+    }   /* programs */
+
+}
+
+group { name: "mokosuite/phone/sim_auth";
+    parts {
+
+        part { name: "instruction";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 255;
+                rel1 {
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    relative: 1.0 0.1;
+                }
+                text {
+                    text: "";
+                    font: "redensek";
+                    size: 12*SCALE_FACTOR;
+                    // was: 25
+                    align: 0.5 0.5;
+                }
+            }
+        }
+
+        part { name: "input_text";
+            type: TEXT;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 255;
+                rel1 {
+                    relative: 0.0 0.1;
+                    offset: 0 0;
+                }
+                rel2 {
+                    relative: 1.0 0.2;
+                    offset: 0 0;
+                }
+                text {
+                    text: "";
+                    font: "redensek";
+                    size: 24*SCALE_FACTOR;
+                    // was: 50
+                    align: 0.5 0.5;
+                }
+            }
+        }
+
+        part { name: "keypad";
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                rel1 {
+                    relative: 0.0 0.21;
+                }
+                rel2 {
+                    relative: 1.0 0.85;
+                }
+            }
+        }
+
+        part { name: "button_delete";
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                rel1 {
+                    relative: 0.5 0.85;
+                }
+                rel2 {
+                    relative: 1.0 1.0;
+                }
+            }
+        }
+
+        part { name: "button_ok";
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                rel1 {
+                    relative: 0.0 0.85;
+                }
+                rel2 {
+                    relative: 0.5 1.0;
+                }
+            }
+        }
+
+    }
+}
+
+group { name: "elm/genlist/item/contact/default";
+    alias: "elm/genlist/item_odd/contact/default";
+    data.item: "stacking" "above";
+    data.item: "selectraise" "on";
+    data.item: "labels" "elm.text elm.text.sub";
+    data.item: "icons" "elm.swallow.icon elm.swallow.end";
+
+    parts {
+        part { name: "event";
+            type: RECT;
+            repeat_events: 1;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 0;
+            }
+        }
+        part { name: "bg";
+            clip_to: "disclip";
+            mouse_events: 0;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                color: COLOR_LIGHT_GRAY;
+                rel1 {
+                    relative: 0.0 0.0;
+                    offset: 0 0;
+                }
+                rel2 {
+                    relative: 1.0 1.0;
+                    offset: 0 0;
+                }
+            }
+            description {
+                state: "selected" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+                color: COLOR_ORANGE_SOLID;
+
+            }
+        }
+        part { name: "seperator";
+            mouse_events: 0;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                color: COLOR_DARK_GRAY;
+                rel1 {
+                    to: "bg";
+                    relative: 0.0 1.0;
+                    offset: 0 -3;
+                }rel2 {
+                    to: "bg";
+                    relative: 1.0 1.0;
+                    offset: 0 -2;
+                }
+
+            }
+
+        }
+        part { name: "elm.swallow.pad";
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                fixed: 1 0;
+                align: 0.0 0.5;
+                rel1 {
+                    relative: 0.0  0.0;
+                    offset:   4    4;
+                }
+                rel2 {
+                    relative: 0.0  1.0;
+                    offset:   4   -5;
+                }
+            }
+        }
+        part { name: "elm.swallow.icon";
+            clip_to: "disclip";
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                fixed: 1 0;
+                align: 0.0 0.5;
+                rel1 {
+                    to_x: "elm.swallow.pad";
+                    relative: 1.0  0.0;
+                    offset:   -1    4;
+                }
+                rel2 {
+                    to_x: "elm.swallow.pad";
+                    relative: 1.0  1.0;
+                    offset:   -1   -5;
+                }
+            }
+        }
+        part { name: "elm.swallow.end";
+            clip_to: "disclip";
+            type: SWALLOW;
+            mouse_events: 0;
+            description {
+                state: "default" 0.0;
+                fixed: 1 0;
+                align: 1.0 0.5;
+                aspect: 1.0 1.0;
+                aspect_preference: VERTICAL;
+                rel1 {
+                    relative: 1.0  0.0;
+                    offset:   -5    10;
+                }
+                rel2 {
+                    relative: 1.0  1.0;
+                    offset:   -10   -5;
+                }
+            }
+        }
+        part { name: "elm.text";
+            clip_to: "disclip";
+            type:           TEXT;
+            mouse_events:   0;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                rel1 {
+                    to_x:     "elm.swallow.icon";
+                    relative: 1.0  0.0;
+                    offset:   4 4;
+                }
+                rel2 {
+                    to_x:     "elm.swallow.end";
+                    relative: 0.0  0.5;
+                    offset:   -1 0;
+                }
+                color: 0 0 0 255;
+                color3: 0 0 0 0;
+                text {
+                    font: "redensek";
+                    size: 10;
+                    elipsis: 0.0;
+                    min: 0 1;
+                    align: 0.0 1.0;
+                }
+            }
+        }
+        part { name: "elm.text.sub";
+            clip_to: "disclip";
+            type:           TEXT;
+            mouse_events:   0;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                //               min: 16 16;
+               rel1 {
+                  to_x:     "elm.swallow.icon";
+                  relative: 1.0  0.5;
+                  offset:   4 4;
+               }
+               rel2 {
+                  to_x:     "elm.swallow.end";
+                  relative: 0.0  1.0;
+                  offset:   -1 -5;
+               }
+                color: COLOR_DARK_GRAY;
+                color3: 0 0 0 0;
+                text {
+                    font: "redensek";
+                    size: 9;
+                    elipsis: 0.0;
+                    min: 0 1;
+                    align: 0.0 0.0;
+                }
+            }
+        }
+        part { name: "disclip";
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                rel1.to: "bg";
+                rel2.to: "bg";
+            }
+            description {
+                state: "disabled" 0.0;
+                inherit: "default" 0.0;
+                color: 255 255 255 64;
+            }
+        }
+    }
+
+    programs {
+        // signal: elm,state,%s,active
+        //   a "check" item named %s went active
+        // signal: elm,state,%s,passive
+        //   a "check" item named %s went passive
+        // default is passive
+
+        program {
+            name:    "go_active";
+            signal:  "elm,state,selected";
+            source:  "elm";
+            action:  STATE_SET "selected" 0.0;
+            target:  "bg";
+            target:  "elm.text";
+            target:  "elm.text.sub";
+        }
+        program {
+            name:    "go_passive";
+            signal:  "elm,state,unselected";
+            source:  "elm";
+            action:  STATE_SET "default" 0.0;
+            target:  "bg";
+            target:  "elm.text";
+            target:  "elm.text.sub";
+            transition: LINEAR 0.1;
+        }
+        program {
+            name:    "go_disabled";
+            signal:  "elm,state,disabled";
+            source:  "elm";
+            action:  STATE_SET "disabled" 0.0;
+            target:  "disclip";
+        }
+        program {
+            name:    "go_enabled";
+            signal:  "elm,state,enabled";
+            source:  "elm";
+            action:  STATE_SET "default" 0.0;
+            target:  "disclip";
+        }
+    }
+} /* elm/genlist/item/contact/default */
+
+
+    group { name: "mokosuite/common/dialpad";
+
+        images {
+            image: "keypad_normal.png" COMP;
+            image: "keypad_pressed.png" COMP;
+        }
+
+        parts {
+
+
+            part { name: "border_top";
                 type: RECT;
+                mouse_events: 0;
                 description {
                     state: "default" 0.0;
-                    visible: 1;
-                    color: COLOR_LIGHT_GRAY;
+                    rel1 {
+                        relative: 0 0;
+                    }
+                    rel2 {
+                        relative: 1 0.01;
+                    }
+                    color: 100 100 100 255;
+                }
+            }
+
+            /* first row */
+            part { name: "button1";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0 0.01;
+                        relative: 0.02 0.02;
+                    }
+                    rel2 {
+                        //relative: 0.32 0.245;
+                        relative: 0.3 0.25;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "button2";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0.33 0.01;
+                        relative: 0.35 0.02;
+                    }
+                    rel2 {
+                        //relative: 0.66 0.245;
+                        relative: 0.64 0.25;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "button3";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0.67 0.01;
+                        relative: 0.69 0.02;
+                    }
+                    rel2 {
+                        //relative: 1.0 0.245;
+                        relative: 0.98 0.25;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "text1";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button1";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button1";
+                    }
+                    text {
+                        text: "1";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+            part { name: "text2";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
                     rel1 {
                         relative: 0.0 0.0;
                         offset: 0 0;
+                        to: "button2";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button2";
+                    }
+                    text {
+                        text: "2";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+            part { name: "text2_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button2";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button2";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 60 60 60 255;
+                }
+            }
+            part { name: "text3";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button3";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button3";
+                    }
+                    text {
+                        text: "3";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+            part { name: "text3_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button3";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button3";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 60 60 60 255;
+                }
+            }
+
+            /* second row */
+            part { name: "button4";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        //relative: 0 0.255;
+                        relative: 0.02 0.265;
+                    }
+                    rel2 {
+                        //relative: 0.32 0.495;
+                        relative: 0.3 0.5;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "button5";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0.33 0.255;
+                        relative: 0.35 0.265;
+                    }
+                    rel2 {
+                        //relative: 0.66 0.495;
+                        relative: 0.64 0.5;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "button6";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0.67 0.255;
+                        relative: 0.69 0.265;
+                    }
+                    rel2 {
+                        //relative: 1.0 0.495;
+                        relative: 0.98 0.5;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "text4";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button4";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button4";
+                    }
+                    text {
+                        text: "4";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+            part { name: "text4_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button4";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button4";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 60 60 60 255;
+                }
+            }
+            part { name: "text5";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button5";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button5";
+                    }
+                    text {
+                        text: "5";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+            part { name: "text5_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button5";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button5";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 60 60 60 255;
+                }
+            }
+            part {
+                name: "text6";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button6";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button6";
+                    }
+                    text {
+                        text: "6";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+            part {
+                name: "text6_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button6";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button6";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 60 60 60 255;
+                }
+            }
+
+            /* third row */
+            part { name: "button7";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0 0.505;
+                        relative: 0.02 0.515;
+                    }
+                    rel2 {
+                        //relative: 0.32 0.745;
+                        relative: 0.3 0.75;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "button8";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0.33 0.505;
+                        relative: 0.35 0.515;
+                    }
+                    rel2 {
+                        //relative: 0.66 0.745;
+                        relative: 0.64 0.75;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "button9";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0.67 0.505;
+                        relative: 0.69 0.515;
+                    }
+                    rel2 {
+                        //relative: 1.0 0.745;
+                        relative: 0.98 0.75;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "text7";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button7";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button7";
+                    }
+                    text {
+                        text: "7";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+            part { name: "text7_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button7";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button7";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 60 60 60 255;
+                }
+            }
+            part { name: "text8";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button8";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button8";
+                    }
+                    text {
+                        text: "8";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+            part { name: "text8_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button8";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button8";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 60 60 60 255;
+                }
+            }
+            part { name: "text9";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button9";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button9";
+                    }
+                    text {
+                        text: "9";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+
+            part { name: "text9_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button9";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button9";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 60 60 60 255;
+                }
+            }
+
+            /* fourth row */
+            part { name: "button_star";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0.0 0.755;
+                        relative: 0.02 0.765;
+                    }
+                    rel2 {
+                        //relative: 0.32 1.0;
+                        relative: 0.3 1.0;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "button0";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0.33 0.755;
+                        relative: 0.35 0.765;
+                    }
+                    rel2 {
+                        //relative: 0.66 1.0;
+                        relative: 0.64 1.0;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "button_rhomb";
+                type: IMAGE;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        //relative: 0.67 0.755;
+                        relative: 0.69 0.765;
+                    }
+                    rel2 {
+                        //relative: 1.0 1.0;
+                        relative: 0.98 1.0;
+                    }
+                    image {
+                        normal: "keypad_normal.png";
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    image {
+                        normal: "keypad_pressed.png";
+                    }
+                }
+            }
+            part { name: "text_star";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button_star";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button_star";
+                    }
+                    text {
+                        text: "*";
+                        font: "redensek:style=bold";
+                        size: 30*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+            part { name: "text0";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button0";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button0";
+                    }
+                    text {
+                        text: "0";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+            part { name: "text0_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button0";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button0";
+                    }
+                    text {
+                        text: "+";
+                        font: "redensek:style=bold";
+                        size: 12*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 60 60 60 255;
+                }
+            }
+            part { name: "text_rhomb";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button_rhomb";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button_rhomb";
+                    }
+                    text {
+                        text: "#";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    inherit: "default" 0.0;
+                    color: 1 1 1 255;
+                }
+            }
+        } /* Close Parts */
+
+        programs {
+            program {
+                name: "button1_clicked";
+                signal: "mouse,clicked,1";
+                source: "button1";
+                action: SIGNAL_EMIT "1" "input";
+            }
+            program {
+                name: "button2_clicked";
+                signal: "mouse,clicked,1";
+                source: "button2";
+                action: SIGNAL_EMIT "2" "input";
+            }
+            program {
+                name: "button3_clicked";
+                signal: "mouse,clicked,1";
+                source: "button3";
+                action: SIGNAL_EMIT "3" "input";
+            }
+            program {
+                name: "button4_clicked";
+                signal: "mouse,clicked,1";
+                source: "button4";
+                action: SIGNAL_EMIT "4" "input";
+            }
+            program {
+                name: "button5_clicked";
+                signal: "mouse,clicked,1";
+                source: "button5";
+                action: SIGNAL_EMIT "5" "input";
+            }
+            program {
+                name: "button6_clicked";
+                signal: "mouse,clicked,1";
+                source: "button6";
+                action: SIGNAL_EMIT "6" "input";
+            }
+            program {
+                name: "button7_clicked";
+                signal: "mouse,clicked,1";
+                source: "button7";
+                action: SIGNAL_EMIT "7" "input";
+            }
+            program {
+                name: "button8_clicked";
+                signal: "mouse,clicked,1";
+                source: "button8";
+                action: SIGNAL_EMIT "8" "input";
+            }
+            program {
+                name: "button9_clicked";
+                signal: "mouse,clicked,1";
+                source: "button9";
+                action: SIGNAL_EMIT "9" "input";
+            }
+            program {
+                name: "button_star_clicked";
+                signal: "mouse,clicked,1";
+                source: "button_star";
+                action: SIGNAL_EMIT "*" "input";
+            }
+            program {
+                name: "button0_mouse_down";
+                signal: "mouse,down,1";
+                source: "button0";
+                action: SIGNAL_EMIT "0" "mouse_down";
+            }
+            program {
+                name: "button0_mouse_up";
+                signal: "mouse,up,1";
+                source: "button0";
+                action: SIGNAL_EMIT "0" "mouse_up";
+            }
+            program {
+                name: "button_rhomb_clicked";
+                signal: "mouse,clicked,1";
+                source: "button_rhomb";
+                action: SIGNAL_EMIT "#" "input";
+            }
+
+
+            program {
+                name: "button1_click";
+                signal: "mouse,down,1";
+                source: "button1";
+                action: STATE_SET "clicked" 0.0;
+                target: "button1";
+                target: "text1";
+                //target: "text1_desc";
+            }
+            program {
+                name: "button2_click";
+                signal: "mouse,down,1";
+                source: "button2";
+                action: STATE_SET "clicked" 0.0;
+                target: "button2";
+                target: "text2";
+                target: "text2_desc";
+            }
+            program {
+                name: "button3_click";
+                signal: "mouse,down,1";
+                source: "button3";
+                action: STATE_SET "clicked" 0.0;
+                target: "button3";
+                target: "text3";
+                target: "text3_desc";
+            }
+            program {
+                name: "button4_click";
+                signal: "mouse,down,1";
+                source: "button4";
+                action: STATE_SET "clicked" 0.0;
+                target: "button4";
+                target: "text4";
+                target: "text4_desc";
+            }
+            program {
+                name: "button5_click";
+                signal: "mouse,down,1";
+                source: "button5";
+                action: STATE_SET "clicked" 0.0;
+                target: "button5";
+                target: "text5";
+                target: "text5_desc";
+            }
+            program {
+                name: "button6_click";
+                signal: "mouse,down,1";
+                source: "button6";
+                action: STATE_SET "clicked" 0.0;
+                target: "button6";
+                target: "text6";
+                target: "text6_desc";
+            }
+            program {
+                name: "button7_click";
+                signal: "mouse,down,1";
+                source: "button7";
+                action: STATE_SET "clicked" 0.0;
+                target: "button7";
+                target: "text7";
+                target: "text7_desc";
+            }
+            program {
+                name: "button8_click";
+                signal: "mouse,down,1";
+                source: "button8";
+                action: STATE_SET "clicked" 0.0;
+                target: "button8";
+                target: "text8";
+                target: "text8_desc";
+            }
+            program {
+                name: "button9_click";
+                signal: "mouse,down,1";
+                source: "button9";
+                action: STATE_SET "clicked" 0.0;
+                target: "button9";
+                target: "text9";
+                target: "text9_desc";
+            }
+            program {
+                name: "button_star_click";
+                signal: "mouse,down,1";
+                source: "button_star";
+                action: STATE_SET "clicked" 0.0;
+                target: "button_star";
+            }
+            program {
+                name: "button0_click";
+                signal: "mouse,down,1";
+                source: "button0";
+                action: STATE_SET "clicked" 0.0;
+                target: "button0";
+            }
+            program {
+                name: "button_rhomb_click";
+                signal: "mouse,down,1";
+                source: "button_rhomb";
+                action: STATE_SET "clicked" 0.0;
+                target: "button_rhomb";
+            }
+            program {
+                name: "button1_unclick";
+                signal: "mouse,up,1";
+                source: "button1";
+                action: STATE_SET "default" 0.0;
+                target: "button1";
+                target: "text1";
+                //target: "text1_desc";
+            }
+            program {
+                name: "button2_unclick";
+                signal: "mouse,up,1";
+                source: "button2";
+                action: STATE_SET "default" 0.0;
+                target: "button2";
+                target: "text2";
+                target: "text2_desc";
+            }
+            program {
+                name: "button3_unclick";
+                signal: "mouse,up,1";
+                source: "button3";
+                action: STATE_SET "default" 0.0;
+                target: "button3";
+                target: "text3";
+                target: "text3_desc";
+            }
+            program {
+                name: "button4_unclick";
+                signal: "mouse,up,1";
+                source: "button4";
+                action: STATE_SET "default" 0.0;
+                target: "button4";
+                target: "text4";
+                target: "text4_desc";
+            }
+            program {
+                name: "button5_unclick";
+                signal: "mouse,up,1";
+                source: "button5";
+                action: STATE_SET "default" 0.0;
+                target: "button5";
+                target: "text5";
+                target: "text5_desc";
+            }
+            program {
+                name: "button6_unclick";
+                signal: "mouse,up,1";
+                source: "button6";
+                action: STATE_SET "default" 0.0;
+                target: "button6";
+                target: "text6";
+                target: "text6_desc";
+            }
+            program {
+                name: "button7_unclick";
+                signal: "mouse,up,1";
+                source: "button7";
+                action: STATE_SET "default" 0.0;
+                target: "button7";
+                target: "text7";
+                target: "text7_desc";
+            }
+            program {
+                name: "button8_unclick";
+                signal: "mouse,up,1";
+                source: "button8";
+                action: STATE_SET "default" 0.0;
+                target: "button8";
+                target: "text8";
+                target: "text8_desc";
+            }
+            program {
+                name: "button9_unclick";
+                signal: "mouse,up,1";
+                source: "button9";
+                action: STATE_SET "default" 0.0;
+                target: "button9";
+                target: "text9";
+                target: "text9_desc";
+            }
+            program {
+                name: "button_star_unclick";
+                signal: "mouse,up,1";
+                source: "button_star";
+                action: STATE_SET "default" 0.0;
+                target: "button_star";
+            }
+            program {
+                name: "button0_unclick";
+                signal: "mouse,up,1";
+                source: "button0";
+                action: STATE_SET "default" 0.0;
+                target: "button0";
+            }
+            program {
+                name: "button_rhomb_unclick";
+                signal: "mouse,up,1";
+                source: "button_rhomb";
+                action: STATE_SET "default" 0.0;
+                target: "button_rhomb";
+            }
+        } /* Close Prog */
+    }
+
+    group { name: "mokosuite/common/keypad";
+        parts {
+
+
+            part { name: "border_top";
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        relative: 0 0;
+                    }
+                    rel2 {
+                        relative: 1 0.01;
+                    }
+                    color: 100 100 100 255;
+                }
+            }
+
+            part { name: "bg";
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        relative: 0 0.01;
+                    }
+                    rel2 {
+                        relative: 1 1;
+                    }
+                    color: 100 100 100 255;
+                }
+            }
+
+            /* first row */
+            part { name: "button1";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0 0.01;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.32 0.245;
+                        offset: 0 0;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0 0.01;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.32 0.245;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "button2";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.33 0.01;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.66 0.245;
+                        offset: 0 0;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0.33 0.01;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.66 0.245;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "button3";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 1.0 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.67 0.01;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 1.0 0.245;
+                        offset: 0 0;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    align: 0.5 0.5;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0.67 0.01;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 1.0 0.245;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "text1";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 1 1 1 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "button1";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "button1";
+                    }
+                    text {
+                        text: "1";
+                        font: "redensek:style=bold:color=000";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+            }
+            part { name: "text2";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 1 1 1 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button2";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button2";
+                    }
+                    text {
+                        text: "2";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+            }
+            part { name: "text2_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 60 60 60 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button2";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button2";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+            }
+            part { name: "text3";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 1 1 1 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button3";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button3";
+                    }
+                    text {
+                        text: "3";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+            }
+            part { name: "text3_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 60 60 60 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button3";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button3";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+            }
+
+            /* second row */
+            part { name: "button4";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0 0.255;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.32 0.495;
+                        offset, 0 0;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0 0.255;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.32 0.495;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "button5";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.33 0.255;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.66 0.495;
+                        offset: 0 0;
+                    }
+                }
+                description { state: "clicked" 0.0;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0.33 0.255;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.66 0.495;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "button6";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.67 0.255;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 1.0 0.495;
+                        offset: 0 0;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0.67 0.255;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 1.0 0.495;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "text4";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 1 1 1 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button4";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button4";
+                    }
+                    text {
+                        text: "4";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+            }
+            part { name: "text4_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 60 60 60 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button4";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button4";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+            }
+            part { name: "text5";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 1 1 1 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button5";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button5";
+                    }
+                    text {
+                        text: "5";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+            }
+            part { name: "text5_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 60 60 60 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button5";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button5";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+            }
+            part {
+                name: "text6";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 1 1 1 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button6";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button6";
+                    }
+                    text {
+                        text: "6";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+            }
+            part {
+                name: "text6_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 60 60 60 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button6";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button6";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+            }
+
+            /* third row */
+            part { name: "button7";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0 0.505;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.32 0.745;
+                        offset: 0 0;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0 0.505;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.32 0.745;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "button8";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.33 0.505;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.66 0.745;
+                        offset: 0 0;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0.33 0.505;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.66 0.745;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "button9";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.67 0.505;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 1.0 0.745;
+                        offset: 0 0;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0.67 0.505;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 1.0 0.745;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "text7";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 1 1 1 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button7";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button7";
+                    }
+                    text {
+                        text: "7";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+            }
+            part { name: "text7_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 60 60 60 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button7";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button7";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+            }
+            part { name: "text8";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 1 1 1 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button8";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button8";
+                    }
+                    text {
+                        text: "8";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+            }
+            part { name: "text8_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 60 60 60 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button8";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button8";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+            }
+            part { name: "text9";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 1 1 1 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button9";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button9";
+                    }
+                    text {
+                        text: "9";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
+                }
+            }
+
+            part { name: "text9_desc";
+                type: TEXT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 60 60 60 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button9";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button9";
+                    }
+                    text {
+                        text: "";
+                        font: "redensek";
+                        size: 10*SCALE_FACTOR;
+                        align: 0.5 0.8;
+                    }
+                }
+            }
+
+            /* fourth row */
+            part { name: "button_star";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.0 0.755;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.32 1.0;
+                        offset: 0 0;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0.0 0.755;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.32 1.0;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "button0";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.33 0.755;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.66 1.0;
+                        offset: 0 0;
+                    }
+                }
+                description {
+                    state: "clicked" 0.0;
+                    color: COLOR_ORANGE_SOLID;
+                    rel1 {
+                        relative: 0.33 0.755;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 0.66 1.0;
+                        offset: 0 0;
+                    }
+                }
+            }
+            part { name: "button_rhomb";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1 {
+                        relative: 0.67 0.755;
+                        offset: 0 0;
                     }
                     rel2 {
                         relative: 1.0 1.0;
@@ -39,229 +3580,368 @@ collections {
                     }
                 }
                 description {
-                    state: "selected" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
+                    state: "clicked" 0.0;
                     color: COLOR_ORANGE_SOLID;
-
-                }
-            }
-            part { name: "seperator";
-                mouse_events: 0;
-                type: RECT;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    color: COLOR_DARK_GRAY;
                     rel1 {
-                        to: "bg";
-                        relative: 0.0 1.0;
-                        offset: 0 -3;
-                    }rel2 {
-                        to: "bg";
+                        relative: 0.67 0.755;
+                        offset: 0 0;
+                    }
+                    rel2 {
                         relative: 1.0 1.0;
-                        offset: 0 -2;
-                    }
-
-                }
-
-            }
-            part { name: "elm.swallow.pad";
-                type: SWALLOW;
-                description {
-                    state: "default" 0.0;
-                    fixed: 1 0;
-                    align: 0.0 0.5;
-                    rel1 {
-                        relative: 0.0  0.0;
-                        offset:   4    4;
-                    }
-                    rel2 {
-                        relative: 0.0  1.0;
-                        offset:   4   -5;
+                        offset: 0 0;
                     }
                 }
             }
-            part { name: "elm.marker";
+            part { name: "text_star";
+                type: TEXT;
                 mouse_events: 0;
-                type: RECT;
                 description {
                     state: "default" 0.0;
-                    visible: 0;
-                    color: COLOR_GREEN;
+                    color: 1 1 1 255;
                     rel1 {
-                        relative: 0.0  0.0;
-                        offset:   0 0;
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button_star";
                     }
                     rel2 {
-                        to_y: "elm.swallow.pad";
-                        relative: 0.0  1.0;
-                        offset: 5 1;
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button_star";
                     }
-                }
-                description {
-                    state: "active" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                }
-            }
-            part { name: "elm.text";
-                clip_to: "disclip";
-                type:           TEXT;
-                mouse_events:   0;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    rel1 {
-                        to_x:     "elm.marker";
-                        relative: 1.0  0.0;
-                        offset:   4 4;
-                    }
-                    rel2 {
-                        to_x:     "elm.text.right";
-                        relative: 0.0  0.5;
-                        offset:   -1 0;
-                    }
-                    color: 0 0 0 255;
-                    color3: 0 0 0 0;
                     text {
-                        font: "redensek";
-                        size: 10;
-                        elipsis: 0.0;
-                        min: 0 1;
-                        align: 0.0 1.0;
+                        text: "*";
+                        font: "redensek:style=bold";
+                        size: 30*SCALE_FACTOR;
+                        align: 0.5 0.15;
                     }
                 }
             }
-            part { name: "elm.text.sub";
-                clip_to: "disclip";
-                type:           TEXT;
-                mouse_events:   0;
-                scale: 1;
+            part { name: "text0";
+                type: TEXT;
+                mouse_events: 0;
                 description {
                     state: "default" 0.0;
-                    //               min: 16 16;
+                    color: 1 1 1 255;
                     rel1 {
-                        to_x:     "elm.marker";
-                        relative: 1.0  0.5;
-                        offset:   4 4;
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button0";
                     }
                     rel2 {
-                        to_x:     "elm.text.right";
-                        relative: 0.0  1.0;
-                        offset:   -1 -5;
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button0";
                     }
-                    color: COLOR_DARK_GRAY;
-                    color3: 0 0 0 0;
                     text {
-                        font: "redensek";
-                        size: 8;
-                        elipsis: 0.0;
-                        min: 0 1;
-                        align: 0.0 0.0;
+                        text: "0";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
                     }
                 }
             }
-            part { name: "elm.text.right";
-                clip_to: "disclip";
-                type:           TEXT;
-                mouse_events:   0;
-                scale: 1;
+            part { name: "text0_desc";
+                type: TEXT;
+                mouse_events: 0;
                 description {
                     state: "default" 0.0;
+                    color: 60 60 60 255;
                     rel1 {
-                        to_y: "elm.text.sub";
-                        relative: 0.8  0.0;
-                        offset:   -5    0;
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button0";
                     }
                     rel2 {
-                        to_y: "elm.text.sub";
-                        relative: 1.0  1.0;
-                        offset:   -5*SCALE_FACTOR   0;
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button0";
                     }
-                    color: COLOR_DARK_GRAY;
-                    color3: 0 0 0 0;
                     text {
-                        font: "redensek";
-                        size: 8;
-                        elipsis: 0.0;
-                        min: 0 1;
-                        align: 1.0 0.0;
+                        text: "+";
+                        font: "redensek:style=bold";
+                        size: 12*SCALE_FACTOR;
+                        align: 0.5 0.8;
                     }
                 }
             }
-            part { name: "disclip";
-                type: RECT;
+            part { name: "text_rhomb";
+                type: TEXT;
+                mouse_events: 0;
                 description {
                     state: "default" 0.0;
-                    rel1.to: "bg";
-                    rel2.to: "bg";
-                }
-                description {
-                    state: "disabled" 0.0;
-                    inherit: "default" 0.0;
-                    color: 255 255 255 64;
+                    color: 1 1 1 255;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                        to: "button_rhomb";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                        to: "button_rhomb";
+                    }
+                    text {
+                        text: "#";
+                        font: "redensek:style=bold";
+                        size: 20*SCALE_FACTOR;
+                        align: 0.5 0.15;
+                    }
                 }
             }
-        }
+        } /* Close Parts */
 
         programs {
-            // signal: elm,state,%s,active
-            //   a "check" item named %s went active
-            // signal: elm,state,%s,passive
-            //   a "check" item named %s went passive
-            // default is passive
+            program {
+                name: "button1_clicked";
+                signal: "mouse,clicked,1";
+                source: "button1";
+                action: SIGNAL_EMIT "1" "input";
+            }
+            program {
+                name: "button2_clicked";
+                signal: "mouse,clicked,1";
+                source: "button2";
+                action: SIGNAL_EMIT "2" "input";
+            }
+            program {
+                name: "button3_clicked";
+                signal: "mouse,clicked,1";
+                source: "button3";
+                action: SIGNAL_EMIT "3" "input";
+            }
+            program {
+                name: "button4_clicked";
+                signal: "mouse,clicked,1";
+                source: "button4";
+                action: SIGNAL_EMIT "4" "input";
+            }
+            program {
+                name: "button5_clicked";
+                signal: "mouse,clicked,1";
+                source: "button5";
+                action: SIGNAL_EMIT "5" "input";
+            }
+            program {
+                name: "button6_clicked";
+                signal: "mouse,clicked,1";
+                source: "button6";
+                action: SIGNAL_EMIT "6" "input";
+            }
+            program {
+                name: "button7_clicked";
+                signal: "mouse,clicked,1";
+                source: "button7";
+                action: SIGNAL_EMIT "7" "input";
+            }
+            program {
+                name: "button8_clicked";
+                signal: "mouse,clicked,1";
+                source: "button8";
+                action: SIGNAL_EMIT "8" "input";
+            }
+            program {
+                name: "button9_clicked";
+                signal: "mouse,clicked,1";
+                source: "button9";
+                action: SIGNAL_EMIT "9" "input";
+            }
+            program {
+                name: "button_star_clicked";
+                signal: "mouse,clicked,1";
+                source: "button_star";
+                action: SIGNAL_EMIT "*" "input";
+            }
+            program {
+                name: "button0_mouse_down";
+                signal: "mouse,down,1";
+                source: "button0";
+                action: SIGNAL_EMIT "0" "mouse_down";
+            }
+            program {
+                name: "button0_mouse_up";
+                signal: "mouse,up,1";
+                source: "button0";
+                action: SIGNAL_EMIT "0" "mouse_up";
+            }
+            program {
+                name: "button_rhomb_clicked";
+                signal: "mouse,clicked,1";
+                source: "button_rhomb";
+                action: SIGNAL_EMIT "#" "input";
+            }
+
 
             program {
-                name:    "go_active";
-                signal:  "elm,state,selected";
-                source:  "elm";
-                action:  STATE_SET "selected" 0.0;
-                target:  "bg";
-                target:  "elm.text";
-                target:  "elm.text.sub";
-                target:  "elm.text.right";
+                name: "button1_click";
+                signal: "mouse,down,1";
+                source: "button1";
+                action: STATE_SET "clicked" 0.0;
+                target: "button1";
             }
             program {
-                name:    "go_passive";
-                signal:  "elm,state,unselected";
-                source:  "elm";
-                action:  STATE_SET "default" 0.0;
-                target:  "bg";
-                target:  "elm.text";
-                target:  "elm.text.sub";
-                target:  "elm.text.right";
-                transition: LINEAR 0.1;
+                name: "button2_click";
+                signal: "mouse,down,1";
+                source: "button2";
+                action: STATE_SET "clicked" 0.0;
+                target: "button2";
             }
             program {
-                name:    "go_disabled";
-                signal:  "elm,state,disabled";
-                source:  "elm";
-                action:  STATE_SET "disabled" 0.0;
-                target:  "disclip";
+                name: "button3_click";
+                signal: "mouse,down,1";
+                source: "button3";
+                action: STATE_SET "clicked" 0.0;
+                target: "button3";
             }
             program {
-                name:    "go_enabled";
-                signal:  "elm,state,enabled";
-                source:  "elm";
-                action:  STATE_SET "default" 0.0;
-                target:  "disclip";
+                name: "button4_click";
+                signal: "mouse,down,1";
+                source: "button4";
+                action: STATE_SET "clicked" 0.0;
+                target: "button4";
             }
             program {
-                name:    "marker_enable";
-                signal:  "elm,marker,enable";
-                source:  "elm";
-                action:  STATE_SET "active" 0.0;
-                target:  "elm.marker";
+                name: "button5_click";
+                signal: "mouse,down,1";
+                source: "button5";
+                action: STATE_SET "clicked" 0.0;
+                target: "button5";
             }
             program {
-                name:    "marker_disable";
-                signal:  "elm,marker,disable";
-                source:  "elm";
-                action:  STATE_SET "default" 0.0;
-                target:  "elm.marker";
+                name: "button6_click";
+                signal: "mouse,down,1";
+                source: "button6";
+                action: STATE_SET "clicked" 0.0;
+                target: "button6";
             }
-        }
-    } /* elm/genlist/item/thread/default */
+            program {
+                name: "button7_click";
+                signal: "mouse,down,1";
+                source: "button7";
+                action: STATE_SET "clicked" 0.0;
+                target: "button7";
+            }
+            program {
+                name: "button8_click";
+                signal: "mouse,down,1";
+                source: "button8";
+                action: STATE_SET "clicked" 0.0;
+                target: "button8";
+            }
+            program {
+                name: "button9_click";
+                signal: "mouse,down,1";
+                source: "button9";
+                action: STATE_SET "clicked" 0.0;
+                target: "button9";
+            }
+            program {
+                name: "button_star_click";
+                signal: "mouse,down,1";
+                source: "button_star";
+                action: STATE_SET "clicked" 0.0;
+                target: "button_star";
+            }
+            program {
+                name: "button0_click";
+                signal: "mouse,down,1";
+                source: "button0";
+                action: STATE_SET "clicked" 0.0;
+                target: "button0";
+            }
+            program {
+                name: "button_rhomb_click";
+                signal: "mouse,down,1";
+                source: "button_rhomb";
+                action: STATE_SET "clicked" 0.0;
+                target: "button_rhomb";
+            }
+            program {
+                name: "button1_unclick";
+                signal: "mouse,up,1";
+                source: "button1";
+                action: STATE_SET "default" 0.0;
+                target: "button1";
+            }
+            program {
+                name: "button2_unclick";
+                signal: "mouse,up,1";
+                source: "button2";
+                action: STATE_SET "default" 0.0;
+                target: "button2";
+            }
+            program {
+                name: "button3_unclick";
+                signal: "mouse,up,1";
+                source: "button3";
+                action: STATE_SET "default" 0.0;
+                target: "button3";
+            }
+            program {
+                name: "button4_unclick";
+                signal: "mouse,up,1";
+                source: "button4";
+                action: STATE_SET "default" 0.0;
+                target: "button4";
+            }
+            program {
+                name: "button5_unclick";
+                signal: "mouse,up,1";
+                source: "button5";
+                action: STATE_SET "default" 0.0;
+                target: "button5";
+            }
+            program {
+                name: "button6_unclick";
+                signal: "mouse,up,1";
+                source: "button6";
+                action: STATE_SET "default" 0.0;
+                target: "button6";
+            }
+            program {
+                name: "button7_unclick";
+                signal: "mouse,up,1";
+                source: "button7";
+                action: STATE_SET "default" 0.0;
+                target: "button7";
+            }
+            program {
+                name: "button8_unclick";
+                signal: "mouse,up,1";
+                source: "button8";
+                action: STATE_SET "default" 0.0;
+                target: "button8";
+            }
+            program {
+                name: "button9_unclick";
+                signal: "mouse,up,1";
+                source: "button9";
+                action: STATE_SET "default" 0.0;
+                target: "button9";
+            }
+            program {
+                name: "button_star_unclick";
+                signal: "mouse,up,1";
+                source: "button_star";
+                action: STATE_SET "default" 0.0;
+                target: "button_star";
+            }
+            program {
+                name: "button0_unclick";
+                signal: "mouse,up,1";
+                source: "button0";
+                action: STATE_SET "default" 0.0;
+                target: "button0";
+            }
+            program {
+                name: "button_rhomb_unclick";
+                signal: "mouse,up,1";
+                source: "button_rhomb";
+                action: STATE_SET "default" 0.0;
+                target: "button_rhomb";
+            }
+        } /* Close Prog */
+    }   /* keypad */
 
-} // collections
+
+
+} /* collections */

@@ -47,7 +47,7 @@ extern int _log_dom;
 
 
 #define MOKOPHONE_SYSCONFDIR     SYSCONFDIR "/mokosuite"
-#define MOKOPHONE_DATADIR        DATADIR "/mokosuite/messages"
+#define MOKOPHONE_DATADIR        DATADIR "/mokosuite/phone"
 
 extern RemoteConfigService* phone_config;
 

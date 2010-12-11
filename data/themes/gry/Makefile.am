@@ -1,9 +1,9 @@
 MAINTAINERCLEANFILES = Makefile.in
 
-filesdir = $(datadir)/mokosuite/messages/themes
+filesdir = $(datadir)/mokosuite/phone/themes
 files_DATA = gry.edj
 
-EDC_DEPS = 
+EDC_DEPS = undo.png
 
 EXTRA_DIST = $(files_DATA) $(EDC_DEPS) theme.edc
 
