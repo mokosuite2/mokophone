@@ -5,6 +5,7 @@
 #include <mokosuite/ui/gui.h>
 #include <mokosuite/utils/misc.h>
 #include <mokosuite/utils/utils.h>
+#include <mokosuite/utils/notify.h>
 #include <mokosuite/utils/remote-config-service.h>
 #include <freesmartphone-glib/freesmartphone-glib.h>
 #include <freesmartphone-glib/ogsmd/call.h>
@@ -32,7 +33,7 @@
 static MokoWin* win = NULL;
 
 /* lista blocchi chiamate */
-static GPtrArray* calls;
+static Eina_List* calls = NULL;
 
 /* pulsanti menu hover */
 static Evas_Object *bt_keypad;
@@ -48,6 +49,9 @@ static char* call_notification_ringtone = NULL;
 static char* call_notification_current_ringtone = NULL;
 
 static int current_mute_status = 0;
+
+// ongoing call notification
+NotifyNotification* call_notification = NULL;
 
 extern DBusGProxy* panel_notifications;
 
@@ -150,16 +154,61 @@ static void _delete(void* mokowin, Evas_Object* obj, void* event_info)
     mokowin_hide((MokoWin *)mokowin);
 }
 
+static void sync_call_notification(void)
+{
+    char* msg;
+    char* body;
+    int count = eina_list_count(calls);
+
+    // no calls - remove if present
+    if (!count) {
+        if (call_notification) {
+            notify_notification_close(call_notification, NULL);
+            g_object_unref(call_notification);
+            call_notification = NULL;
+        }
+        return;
+    }
+
+    // one call - use peer
+    else if (count == 1) {
+        PhoneCallBlock* c = calls->data;
+        msg = g_strdup(c->peer);
+        // TODO body: timer if single call
+        body = NULL;
+    }
+    else {
+        msg = g_strdup_printf(_("%d active calls"), count);
+    }
+
+    if (!call_notification)
+        call_notification = mokosuite_notification_new(
+            "phone.call.active",    // category
+            msg,                    // summary
+            body,                   // body
+            NULL,                   // icon TODO
+            NOTIFICATION_HINT_DONT_PUSH     // don't push to panel top
+            |
+            NOTIFICATION_HINT_ONGOING       // ongoing notification
+        );
+    else
+        notify_notification_update(call_notification, msg, body, NULL);
+
+    notify_notification_show(call_notification, NULL);
+}
+
 static PhoneCallBlock* append_callblock(const char *peer, int id, gboolean outgoing)
 {
+
     PhoneCallBlock *b = phone_call_block_new(win, peer, id, outgoing);
 
     // aggiungi la chiamata alla lista e alla vbox
-    g_ptr_array_add(calls, b);
+    calls = eina_list_append(calls, b);
 
     // ottieni la call block precedente
-    if (calls->len > 1) {
-        PhoneCallBlock *prev = (PhoneCallBlock *) g_ptr_array_index(calls, calls->len - 2);
+    int c = eina_list_count(calls);
+    if (c > 1) {
+        PhoneCallBlock *prev = (PhoneCallBlock *) eina_list_nth(calls, c - 2);
         elm_box_pack_after(win->vbox, b->widget, prev->widget);
     } else {
         elm_box_pack_start(win->vbox, b->widget);
@@ -168,17 +217,18 @@ static PhoneCallBlock* append_callblock(const char *peer, int id, gboolean outgo
         ousaged_usage_request_resource("CPU", NULL, NULL);
     }
 
+    // update notification
+    sync_call_notification();
     return b;
 }
 
 static void hold_all(void)
 {
-    int i;
+    PhoneCallBlock *c = NULL;
+    Eina_List* iter;
     gboolean found = FALSE;
 
-    for (i = 0; i < calls->len; i++) {
-        PhoneCallBlock *c = g_ptr_array_index(calls, i);
-
+    EINA_LIST_FOREACH(calls, iter, c) {
         // chiamata in attesa -- ok
         if (c->status == CALL_STATUS_HELD) continue;
 
@@ -285,7 +335,7 @@ void phone_call_win_call_remove(PhoneCallBlock* call)
     g_debug("[PhoneCallWin] Removing call block for %d", call->id);
 
     // unica chiamata, chiudi finestra e deinizializza il suono
-    if (calls->len == 1) {
+    if (eina_list_count(calls) == 1) {
         phone_call_win_hide();
 
         sound_state_set(SOUND_STATE_IDLE);
@@ -303,8 +353,12 @@ void phone_call_win_call_remove(PhoneCallBlock* call)
         odeviced_idlenotifier_set_state(IDLE_STATE_IDLE_PRELOCK, NULL, NULL);
     }
 
-    // rimuovi la chiamata -- sara' distrutto tutto automaticamente
-    g_ptr_array_remove(calls, call);
+    // remove call
+    calls = eina_list_remove(calls, call);
+    // destroy call
+    phone_call_block_destroy(call);
+    // update notification
+    sync_call_notification();
 }
 
 /* richiesta nuova chiamata in uscita */
@@ -332,7 +386,7 @@ void phone_call_win_call_status(int id, CallStatus status, GHashTable* propertie
 
     const char *reason = map_get_string(properties, "reason");
     const char *number = map_get_string(properties, "number");
-    int i;
+    Eina_List* iter;
 
     // mmm...
     if (number == NULL) {
@@ -346,13 +400,12 @@ void phone_call_win_call_status(int id, CallStatus status, GHashTable* propertie
     if (status == CALL_STATUS_INCOMING) {
         // controlla se la chiamata e' gia' stata inserita
 
-        for (i = 0; i < calls->len; i++) {
-            PhoneCallBlock *c = g_ptr_array_index(calls, i);
+        PhoneCallBlock* c = NULL;
+        EINA_LIST_FOREACH(calls, iter, c)
             if (c->id == id) return; // ehm...
-        }
 
         // appendi il blocco chiamata
-        PhoneCallBlock *c = append_callblock(number, id, FALSE);
+        c = append_callblock(number, id, FALSE);
 
         // segnale iniziale di arrivo chiamata entrante
         phone_call_block_call_status(c, CALL_STATUS_INCOMING, properties);
@@ -361,7 +414,7 @@ void phone_call_win_call_status(int id, CallStatus status, GHashTable* propertie
         phone_call_win_activate();
 
         // notifica
-        call_notification_start(calls->len > 1);
+        call_notification_start(eina_list_count(calls) > 1);
 
     } else {
         // sicuramente dobbiamo fermare qualunque notifica
@@ -369,16 +422,17 @@ void phone_call_win_call_status(int id, CallStatus status, GHashTable* propertie
 
         // altre chiamate, cerca in lista e inoltra il segnale
 
-        for (i = 0; i < calls->len; i++) {
-            PhoneCallBlock *c = g_ptr_array_index(calls, i);
+        PhoneCallBlock* c = NULL;
+        EINA_LIST_FOREACH(calls, iter, c) {
             if (c->id == id) {
                 phone_call_block_call_status(c, status, properties);
+                c = NULL;
                 break;
             }
         }
 
         // chiamata in uscita non trovata... mmm...
-        if (i >= calls->len && status == CALL_STATUS_OUTGOING) {
+        if (c && status == CALL_STATUS_OUTGOING) {
             // appendi il blocco chiamata
             PhoneCallBlock *c = append_callblock(number, id, TRUE);
 
@@ -390,7 +444,7 @@ void phone_call_win_call_status(int id, CallStatus status, GHashTable* propertie
         }
 
         // e' la prima chiamata attiva, inizializza il suono
-        if ((status == CALL_STATUS_ACTIVE || status == CALL_STATUS_OUTGOING) && calls->len == 1) {
+        if ((status == CALL_STATUS_ACTIVE || status == CALL_STATUS_OUTGOING) && eina_list_count(calls) == 1) {
             sound_state_set(SOUND_STATE_INIT);
             sound_headset_presence_callback(headset_presence);
 
@@ -405,7 +459,7 @@ void phone_call_win_call_status(int id, CallStatus status, GHashTable* propertie
 
 int phone_call_win_num_calls(void)
 {
-    return calls->len;
+    return eina_list_count(calls);
 }
 
 void phone_call_win_activate(void)
@@ -441,8 +495,6 @@ void phone_call_win_init(void)
     mokowin_menu_set(win, make_menu());
 
     /* altre cose */
-    calls = g_ptr_array_new_with_free_func((GDestroyNotify)phone_call_block_destroy);
-
     sound_set_mute_pointer(&current_mute_status);
 
     odeviced_vibrator_dbus_connect();
@@ -463,7 +515,4 @@ void phone_call_win_init(void)
 
     // callback per i settaggi delle notifiche
     g_signal_connect(G_OBJECT(phone_config), "changed", G_CALLBACK(call_notification_settings), NULL);
-
-    // registra la notifica di chiamata attiva
-    // TODO libnotify
 }

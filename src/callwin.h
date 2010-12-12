@@ -6,6 +6,7 @@
 #include <glib.h>
 #include <freesmartphone-glib/ogsmd/call.h>
 #include <mokosuite/utils/utils.h>
+#include <libnotify/notify.h>
 
 #define CALL_NOTIFICATION_SOUND         "call_notification_sound"
 #define CALL_NOTIFICATION_VIBRATION     "call_notification_vibration"
@@ -22,5 +23,7 @@ void phone_call_win_activate(void);
 void phone_call_win_hide(void);
 
 void phone_call_win_init(void);
+
+extern NotifyNotification* call_notification;
 
 #endif  /* __CALLWIN_H */
