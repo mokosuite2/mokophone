@@ -19,6 +19,7 @@
  */
 
 #include <mokosuite/utils/utils.h>
+#include <mokosuite/utils/notify.h>
 #include <mokosuite/utils/remote-config-service.h>
 #include <mokosuite/utils/dbus.h>
 #include <mokosuite/ui/gui.h>
@@ -26,6 +27,7 @@
 #include <mokosuite/pim/contactsdb.h>
 #include <freesmartphone-glib/freesmartphone-glib.h>
 #include <phone-utils.h>
+#include <libnotify/notify.h>
 
 #include "globals.h"
 #include "gsm.h"
@@ -77,6 +79,8 @@ int main(int argc, char* argv[])
         cfg_file);
     g_free(cfg_file);
 
+    notify_init(PACKAGE_NAME);
+
     // TODO phone service
 
     /* inizializza il database dei contatti */
@@ -97,6 +101,8 @@ int main(int argc, char* argv[])
 
     elm_run();
     elm_shutdown();
+
+    notify_uninit();
 
     return EXIT_SUCCESS;
 }

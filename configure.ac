@@ -87,6 +87,8 @@ if test "x$enable_debug" != "xno"; then
     AC_DEFINE(DEBUG, 1, [Define to enable debug build])
 fi
 
+AC_DEFINE(CONTACTSDB_SQLITE, 1, [Enable SQLite contacts database])
+
 AC_OUTPUT([
 Makefile
 src/Makefile

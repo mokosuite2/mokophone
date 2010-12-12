@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "gsm.h"
 
+#include <mokosuite/utils/notify.h>
 #include <mokosuite/ui/gui.h>
 #include <mokosuite/pim/callsdb.h>
 #include <freesmartphone-glib/ogsmd/network.h>
@@ -20,7 +21,8 @@ static MokoWin* win = NULL;
 
 MokoPopupStatus* waiting_ussd = NULL;
 extern DBusGProxy* panel_notifications;
-// TODO - int ussd_notification_id = 0;
+static NotifyNotification* ussd_notification = NULL;
+static guint ussd_count = 0;
 
 /* menu_hover delle sezioni */
 typedef Evas_Object* (*MenuGenerator)(void);
@@ -293,14 +295,13 @@ void phone_win_goto_section(int section, gboolean force)
         //    phone_log_init();
     }
 
-    // in ogni caso rimuovi notifica USSD
-    // TODO libnotify
-    /*
-    if (ussd_notification_id) {
-        moko_notifications_remove(panel_notifications, ussd_notification_id, NULL);
-        ussd_notification_id = 0;
+    // remove notification anyway
+    if (ussd_notification) {
+        notify_notification_close(ussd_notification, NULL);
+        g_object_unref(ussd_notification);
+        ussd_notification = NULL;
+        ussd_count = 0;
     }
-    */
 }
 
 // giusto per sicurezza...
@@ -343,6 +344,14 @@ bool phone_win_call_internal(const char *peer, bool *hide)
     return ready;
 }
 
+static void _ussd_action(NotifyNotification *notification, char *action, gpointer user_data)
+{
+    g_debug("ActionInvoked! (%s)", action);
+    if (action != NULL && !strcmp(action, "ussd-show"))
+        // activate phone section
+        phone_win_activate(SECTION_PHONE, FALSE);
+}
+
 void phone_win_ussd_reply(int mode, const char* message)
 {
     // distruggi eventuale inwin status
@@ -361,14 +370,21 @@ void phone_win_ussd_reply(int mode, const char* message)
 
     if (!ecore_x_window_visible_get(xwin) || ecore_x_window_focus_get() != xwin) {
         g_debug("Notifying USSD response to notification daemon");
-        // TODO libnotify
-        /*
-        if (ussd_notification_id)
-            moko_notifications_remove(panel_notifications, ussd_notification_id, NULL);
 
-        ussd_notification_id = moko_notifications_push(panel_notifications, message,
-            "unread-ussd", message, MOKOPANEL_NOTIFICATION_FLAG_NONE, NULL);
-        */
+        // notify to notification daemon
+        ussd_count++;
+        if (!ussd_notification) {
+            char* msg;
+            if (ussd_count == 1) msg = g_strdup(_("New USSD message"));
+            else msg = g_strdup_printf(_("%d new USSD message"), ussd_count);
+
+            ussd_notification = mokosuite_notification_new("ussd-message",
+                msg, message, NULL, 0);
+            notify_notification_add_action(ussd_notification, "ussd-show", "Show", _ussd_action, NULL, NULL);
+            notify_notification_show(ussd_notification, NULL);
+
+            g_free(msg);
+        }
     }
 
     moko_popup_alert_new(win, message);
@@ -444,7 +460,8 @@ void phone_win_init(void)
     obj_pager = make_pager(pages);
     elm_layout_content_set(win->layout, "pager", obj_pager);
 
-    // TODO connect to libnotify
+    // TEST
+    evas_object_resize(win->win, 480, 640);
 
     // inizia con la sezione telefono
     phone_win_goto_section(SECTION_PHONE, TRUE);
