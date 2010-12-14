@@ -20,7 +20,6 @@
 static MokoWin* win = NULL;
 
 MokoPopupStatus* waiting_ussd = NULL;
-extern DBusGProxy* panel_notifications;
 static NotifyNotification* ussd_notification = NULL;
 static guint ussd_count = 0;
 

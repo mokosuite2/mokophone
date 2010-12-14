@@ -1,3 +1,8 @@
+/* TODO
+ * - segnali per le chiamate perse
+ * - azioni per la notifica delle chiamate perse
+ */
+
 #include "globals.h"
 #include "gsm.h"
 
@@ -6,6 +11,7 @@
 #include <mokosuite/pim/callsdb.h>
 #include <mokosuite/utils/misc.h>
 #include <mokosuite/utils/utils.h>
+#include <mokosuite/utils/notify.h>
 
 #include "phonewin.h"
 #include "logview.h"
@@ -19,10 +25,12 @@ Evas_Object *log_list = NULL;
 // FIXME bug del cazzo della genlist
 static gboolean longpressed = FALSE;
 
-extern DBusGProxy* panel_notifications;
+// lost calls list (for setting New=0)
+static Eina_List* lost_calls = NULL;
 
-// lista chiamate perse
-static GList* lost_calls = NULL;
+// lost calls notification
+static NotifyNotification* lost_calls_notification = NULL;
+
 
 /* -- sezione log -- */
 
@@ -241,9 +249,59 @@ Elm_Genlist_Item_Class* log_preprocess_call(CallEntry* call)
 
     // appendi l'id della chiamata alla lista se persa
     if (!call->answered && call->is_new && call->direction == DIRECTION_INCOMING)
-        lost_calls = g_list_append(lost_calls, GINT_TO_POINTER(call->id));
+        lost_calls = eina_list_append(lost_calls, GINT_TO_POINTER(call->id));
 
     return cur_itc;
+}
+
+static void _notify_activate(NotifyNotification* notify, char* action, void* data)
+{
+    // show call win
+    phone_win_activate(SECTION_LOG, FALSE);
+}
+
+static void sync_lost_calls_notification(void)
+{
+    char* msg;
+    char* body;
+    int count = eina_list_count(lost_calls);
+
+    // no calls - remove if present
+    if (!count) {
+        if (lost_calls_notification) {
+            notify_notification_close(lost_calls_notification, NULL);
+            g_object_unref(lost_calls_notification);
+            lost_calls_notification = NULL;
+        }
+        return;
+    }
+
+    // one call
+    else if (count == 1) {
+        msg = g_strdup(_("1 missed call"));
+        // TODO body: date/time or peer?
+        body = NULL;
+    }
+    else {
+        msg = g_strdup_printf(_("%d missed calls"), count);
+    }
+
+    if (!lost_calls_notification) {
+        lost_calls_notification = mokosuite_notification_new(
+            "phone.call.lost",      // category
+            msg,                    // summary
+            body,                   // body
+            NULL,                   // icon TODO
+            0
+        );
+        notify_notification_set_timeout(lost_calls_notification, 0);
+        notify_notification_set_hint_string(lost_calls_notification, "image_path", "file://" MOKOPHONE_DATADIR "/log_call-missed.png");
+        notify_notification_add_action(lost_calls_notification, "activate", _("Show"), NOTIFY_ACTION_CALLBACK(_notify_activate), NULL, NULL);
+    }
+    else
+        notify_notification_update(lost_calls_notification, msg, body, NULL);
+
+    notify_notification_show(lost_calls_notification, NULL);
 }
 
 // richiamato all'aggiunta di una chiamata appena terminata
@@ -253,7 +311,7 @@ static void log_process_call_first(CallEntry* call, gpointer data)
     call->data = elm_genlist_item_prepend((Evas_Object *) data, cur_itc, call,
         NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
 
-    // notifica chiamata persa gestita da opimd + panel
+    sync_lost_calls_notification();
 }
 
 // richiamato all'aggiunta di una chiamata in caricamento dal db
@@ -262,31 +320,6 @@ static void log_process_call(CallEntry* call, gpointer data)
     Elm_Genlist_Item_Class* cur_itc = log_preprocess_call(call);
     call->data = elm_genlist_item_append((Evas_Object *) data, cur_itc, call,
         NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
-
-    // notifica chiamata persa gestita da opimd + panel
-}
-
-/* aggiunge una chiamata alla lista */
-void logview_add_call(CallEntry* e)
-{
-    /* TODO ricerca binaria nella lista per trovare con meno passi possibili */
-
-    // lookup!
-    Elm_Genlist_Item_Class* cur_itc = &itc;
-    if (e->peer) {
-        e->data2 = contactsdb_lookup_number(e->peer);
-
-        if (e->data2)
-            cur_itc = &itc_sub;
-    }
-
-    // FIXME per ora aggiungi all'inizio
-    Elm_Genlist_Item *it = elm_genlist_item_prepend(log_list, cur_itc, e,
-        NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
-
-    e->data = it;
-
-    // notifica chiamata persa gestita da opimd + panel
 }
 
 /* costruisce la sezione log */
@@ -329,6 +362,7 @@ Evas_Object* logview_make_section(void)
     // inializza quell'altro
     logentry_init(_popup_clicked_wrapper);
 
+    sync_lost_calls_notification();
     return log_list;
 }
 
@@ -356,12 +390,12 @@ void logview_reset_view(void)
         elm_genlist_item_show(item);
 
     // imposta tutte le chiamate perse nuove a New = 0
-    GList* iter = lost_calls;
-    while (iter) {
-        callsdb_set_call_new(GPOINTER_TO_INT(iter->data), FALSE);
-        iter = iter->next;
-    }
+    Eina_List* iter;
+    void* cid;
 
-    g_list_free(lost_calls);
+    EINA_LIST_FOREACH(lost_calls, iter, cid)
+        callsdb_set_call_new(GPOINTER_TO_INT(cid), FALSE);
+
+    eina_list_free(lost_calls);
     lost_calls = NULL;
 }

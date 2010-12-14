@@ -53,7 +53,6 @@ static int current_mute_status = 0;
 // ongoing call notification
 NotifyNotification* call_notification = NULL;
 
-extern DBusGProxy* panel_notifications;
 
 /**
  * Fa partire una notifica di chiamata.
@@ -154,6 +153,12 @@ static void _delete(void* mokowin, Evas_Object* obj, void* event_info)
     mokowin_hide((MokoWin *)mokowin);
 }
 
+static void _notify_activate(NotifyNotification* notify, char* action, void* data)
+{
+    // show call win
+    phone_call_win_activate();
+}
+
 static void sync_call_notification(void)
 {
     char* msg;
@@ -181,7 +186,7 @@ static void sync_call_notification(void)
         msg = g_strdup_printf(_("%d active calls"), count);
     }
 
-    if (!call_notification)
+    if (!call_notification) {
         call_notification = mokosuite_notification_new(
             "phone.call.active",    // category
             msg,                    // summary
@@ -191,6 +196,10 @@ static void sync_call_notification(void)
             |
             NOTIFICATION_HINT_ONGOING       // ongoing notification
         );
+        notify_notification_set_timeout(call_notification, 0);
+        notify_notification_set_hint_string(call_notification, "image_path", "file://" MOKOPHONE_DATADIR "/call-start.png");
+        notify_notification_add_action(call_notification, "activate", _("Show"), NOTIFY_ACTION_CALLBACK(_notify_activate), NULL, NULL);
+    }
     else
         notify_notification_update(call_notification, msg, body, NULL);
 

@@ -5,8 +5,6 @@
 #include <mokosuite/pim/callsdb.h>
 #include <Elementary.h>
 
-void logview_add_call(CallEntry* e);
-
 Evas_Object* logview_make_section(void);
 Evas_Object* logview_make_menu(void);
 void logview_reset_view(void);

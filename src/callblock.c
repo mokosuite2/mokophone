@@ -26,7 +26,6 @@ static void end_call(PhoneCallBlock* call, bool release);
 static void call_held(PhoneCallBlock* call);
 static void call_duration_update(PhoneCallBlock* c);
 
-extern DBusGProxy* panel_notifications;
 
 /* chiamata finalizzata */
 static void _finalize_call(gpointer popup, gpointer data)
