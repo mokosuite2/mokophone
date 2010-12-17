@@ -12,6 +12,7 @@
 #include <mokosuite/utils/misc.h>
 #include <mokosuite/utils/utils.h>
 #include <mokosuite/utils/notify.h>
+#include <freesmartphone-glib/opimd/call.h>
 
 #include "phonewin.h"
 #include "logview.h"
@@ -30,6 +31,15 @@ static Eina_List* lost_calls = NULL;
 
 // lost calls notification
 static NotifyNotification* lost_calls_notification = NULL;
+
+// callback data for update/delete signals for lost calls
+typedef struct {
+    CallEntry* call;
+    gpointer update_signal;
+    gpointer delete_signal;
+} notification_signal_t;
+
+static void sync_lost_calls_notification(void);
 
 
 /* -- sezione log -- */
@@ -237,6 +247,42 @@ static void log_genlist_del(void *data, Evas_Object *obj)
     g_free(call);
 }
 
+static void call_update(gpointer data, GHashTable* props)
+{
+    g_debug("Call has been modified - checking New attribute");
+    // chiamata modificata - controlla new
+    if (g_hash_table_lookup(props, "New") && !map_get_bool(props, "New", TRUE)) {
+        notification_signal_t* no = data;
+
+        // disconnetti segnali fso
+        opimd_call_call_updated_disconnect(no->update_signal);
+        opimd_call_call_deleted_disconnect(no->delete_signal);
+
+        g_debug("New is 0 - removing missed call");
+        lost_calls = eina_list_remove(lost_calls, no->call);
+        sync_lost_calls_notification();
+
+        g_free(no);
+    }
+}
+
+static void call_remove(gpointer data)
+{
+    notification_signal_t* no = data;
+
+    // chiamata cancellata - rimuovi sicuramente
+    g_debug("Call has been deleted - removing missed call");
+
+    // disconnetti segnali fso
+    opimd_call_call_updated_disconnect(no->update_signal);
+    opimd_call_call_deleted_disconnect(no->delete_signal);
+
+    lost_calls = eina_list_remove(lost_calls, no->call);
+    sync_lost_calls_notification();
+
+    g_free(no);
+}
+
 Elm_Genlist_Item_Class* log_preprocess_call(CallEntry* call)
 {
     Elm_Genlist_Item_Class* cur_itc = &itc;
@@ -248,8 +294,25 @@ Elm_Genlist_Item_Class* log_preprocess_call(CallEntry* call)
     }
 
     // appendi l'id della chiamata alla lista se persa
-    if (!call->answered && call->is_new && call->direction == DIRECTION_INCOMING)
-        lost_calls = eina_list_append(lost_calls, GINT_TO_POINTER(call->id));
+    if (!call->answered && call->is_new && call->direction == DIRECTION_INCOMING) {
+        g_debug("Adding lost call %d", call->id);
+        Eina_List* iter;
+        CallEntry* cp;
+
+        EINA_LIST_FOREACH(lost_calls, iter, cp)
+            if (cp->id == call->id) goto skip_lost;
+
+        lost_calls = eina_list_append(lost_calls, call);
+
+        // fso signals for updates and delete
+        notification_signal_t* no = calloc(1, sizeof(notification_signal_t));
+        no->call = call;
+        char* path = callsdb_get_call_path(call->id);
+        no->delete_signal = opimd_call_call_deleted_connect(path, call_remove, no);
+        no->update_signal = opimd_call_call_updated_connect(path, call_update, no);
+skip_lost:
+        ;
+    }
 
     return cur_itc;
 }
@@ -265,6 +328,8 @@ static void sync_lost_calls_notification(void)
     char* msg;
     char* body;
     int count = eina_list_count(lost_calls);
+    Eina_List* iter;
+    CallEntry* call;
 
     // no calls - remove if present
     if (!count) {
@@ -280,10 +345,18 @@ static void sync_lost_calls_notification(void)
     else if (count == 1) {
         msg = g_strdup(_("1 missed call"));
         // TODO body: date/time or peer?
-        body = NULL;
+        CallEntry* call = lost_calls->data;
+        body = g_strdup(call->peer);
     }
     else {
         msg = g_strdup_printf(_("%d missed calls"), count);
+        char** content = calloc(count, sizeof(char *));
+        int i = 0;
+        EINA_LIST_FOREACH(lost_calls, iter, call)
+            content[i++] = call->peer;
+
+        body = g_strjoinv("\n", content);
+        g_free(content);
     }
 
     if (!lost_calls_notification) {
@@ -300,6 +373,9 @@ static void sync_lost_calls_notification(void)
     }
     else
         notify_notification_update(lost_calls_notification, msg, body, NULL);
+
+    g_free(msg);
+    g_free(body);
 
     notify_notification_show(lost_calls_notification, NULL);
 }
@@ -320,6 +396,8 @@ static void log_process_call(CallEntry* call, gpointer data)
     Elm_Genlist_Item_Class* cur_itc = log_preprocess_call(call);
     call->data = elm_genlist_item_append((Evas_Object *) data, cur_itc, call,
         NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+
+    sync_lost_calls_notification();
 }
 
 /* costruisce la sezione log */
@@ -391,10 +469,10 @@ void logview_reset_view(void)
 
     // imposta tutte le chiamate perse nuove a New = 0
     Eina_List* iter;
-    void* cid;
+    CallEntry* call;
 
-    EINA_LIST_FOREACH(lost_calls, iter, cid)
-        callsdb_set_call_new(GPOINTER_TO_INT(cid), FALSE);
+    EINA_LIST_FOREACH(lost_calls, iter, call)
+        callsdb_set_call_new(call->id, FALSE);
 
     eina_list_free(lost_calls);
     lost_calls = NULL;
