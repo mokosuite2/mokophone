@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Phone
+Name[it]=Telefono
+Comment=Phone application
+Comment[it]=Applicazione telefono
+Exec=mokophone-activate.sh
+Icon=shr-dialer
+Terminal=false
+Type=Application
+Categories=Application;PIM;Office;Bar;
+MimeType=text/x-vcard;
+X-MB-SingleInstance=true
+StartupNotify=true
