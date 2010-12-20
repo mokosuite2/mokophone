@@ -460,7 +460,7 @@ void phone_win_init(void)
     elm_layout_content_set(win->layout, "pager", obj_pager);
 
     // TEST
-    evas_object_resize(win->win, 480, 640);
+    //evas_object_resize(win->win, 480, 640);
 
     // inizia con la sezione telefono
     phone_win_goto_section(SECTION_PHONE, TRUE);

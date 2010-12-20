@@ -101,9 +101,6 @@ int main(int argc, char* argv[])
     phone_win_init();
     phone_call_win_init();
 
-    // TEST
-    phone_win_activate(SECTION_PHONE, FALSE);
-
     elm_run();
     elm_shutdown();
 
