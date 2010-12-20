@@ -34,6 +34,7 @@
 #include "sound.h"
 #include "phonewin.h"
 #include "callwin.h"
+#include "mokophone-service.h"
 
 #define MOKOPHONE_NAME               "org.mokosuite.phone"
 #define MOKOPHONE_CONFIG_PATH        MOKOSUITE_DBUS_PATH "/Phone/Config"
@@ -43,6 +44,9 @@ int _log_dom = -1;
 
 // configuration service
 RemoteConfigService* phone_config = NULL;
+
+// phone service
+MokophoneService* phone_service = NULL;
 
 int main(int argc, char* argv[])
 {
@@ -81,7 +85,8 @@ int main(int argc, char* argv[])
 
     notify_init(PACKAGE_NAME);
 
-    // TODO phone service
+    // phone service
+    phone_service = mokophone_service_new();
 
     /* inizializza il database dei contatti */
     char* db_path = g_strdup_printf("%s/.config/mokosuite/contacts.db", g_get_home_dir());
