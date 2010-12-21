@@ -60,11 +60,14 @@ NotifyNotification* call_notification = NULL;
  */
 static void call_notification_start(gboolean in_call)
 {
+    // TODO notifica in chiamata attiva
     if (in_call) {
-        // TODO notifica in chiamata attiva
+        // TODO
 
+    // notifica senza chiamata attiva
     } else {
-        // notifica senza chiamata attiva
+        // request display
+        ousaged_usage_request_resource("Display", NULL, NULL);
 
         // vibrazione
         if (call_notification_vibration && odevicedVibratorBus) {
@@ -110,6 +113,9 @@ static void call_notification_stop()
 
     // ferma aux led
     odeviced_led_set_brightness(CALL_LED_PATH, 0, NULL, NULL);
+
+    // release display
+    ousaged_usage_release_resource("Display", NULL, NULL);
 }
 
 static void call_notification_settings(RemoteConfigService *object, const char* section, const char *key, GValue *value)

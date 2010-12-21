@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 METHOD=$1
 PARAMS=$2

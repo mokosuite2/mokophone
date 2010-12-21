@@ -31,6 +31,7 @@ static Eina_List* lost_calls = NULL;
 
 // lost calls notification
 static NotifyNotification* lost_calls_notification = NULL;
+static bool dirty_notification = FALSE;
 
 // callback data for update/delete signals for lost calls
 typedef struct {
@@ -260,6 +261,7 @@ static void call_update(gpointer data, GHashTable* props)
 
         g_debug("New is 0 - removing missed call");
         lost_calls = eina_list_remove(lost_calls, no->call);
+        dirty_notification = TRUE;
         sync_lost_calls_notification();
 
         g_free(no);
@@ -278,6 +280,7 @@ static void call_remove(gpointer data)
     opimd_call_call_deleted_disconnect(no->delete_signal);
 
     lost_calls = eina_list_remove(lost_calls, no->call);
+    dirty_notification = TRUE;
     sync_lost_calls_notification();
 
     g_free(no);
@@ -302,6 +305,7 @@ Elm_Genlist_Item_Class* log_preprocess_call(CallEntry* call)
         EINA_LIST_FOREACH(lost_calls, iter, cp)
             if (cp->id == call->id) goto skip_lost;
 
+        dirty_notification = TRUE;
         lost_calls = eina_list_append(lost_calls, call);
 
         // fso signals for updates and delete
@@ -325,6 +329,9 @@ static void _notify_activate(NotifyNotification* notify, char* action, void* dat
 
 static void sync_lost_calls_notification(void)
 {
+    if (!dirty_notification) return;
+    dirty_notification = FALSE;
+
     char* msg;
     char* body;
     int count = eina_list_count(lost_calls);
@@ -350,7 +357,7 @@ static void sync_lost_calls_notification(void)
     }
     else {
         msg = g_strdup_printf(_("%d missed calls"), count);
-        char** content = calloc(count, sizeof(char *));
+        char** content = calloc(count + 1, sizeof(char *));
         int i = 0;
         EINA_LIST_FOREACH(lost_calls, iter, call)
             content[i++] = call->peer;
@@ -365,7 +372,7 @@ static void sync_lost_calls_notification(void)
             msg,                    // summary
             body,                   // body
             NULL,                   // icon TODO
-            0
+            NOTIFICATION_HINT_SHOW_ON_RESUME     // show on resume
         );
         notify_notification_set_timeout(lost_calls_notification, 0);
         notify_notification_set_hint_string(lost_calls_notification, "image_path", "file://" MOKOPHONE_DATADIR "/log_call-missed.png");
