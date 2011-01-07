@@ -42,9 +42,9 @@ static Evas_Object *bt_mute;
 static Evas_Object *bt_speaker;
 
 // impostazioni notifiche
-static gboolean call_notification_sound = FALSE;
-static gboolean call_notification_vibration = FALSE;
-static char* call_notification_ringtone = NULL;
+gboolean call_notification_sound = FALSE;
+gboolean call_notification_vibration = FALSE;
+char* call_notification_ringtone = NULL;
 
 static char* call_notification_current_ringtone = NULL;
 
@@ -96,7 +96,7 @@ static void call_notification_start(gboolean in_call)
 /**
  * Ferma una notifica di chiamata.
  */
-static void call_notification_stop()
+void phone_call_win_notification_stop(void)
 {
     // ferma vibrazione
     if (odevicedVibratorBus)
@@ -120,20 +120,25 @@ static void call_notification_stop()
 
 static void call_notification_settings(RemoteConfigService *object, const char* section, const char *key, GValue *value)
 {
+    EINA_LOG_DBG("section=%s, key=%s, type=%s", section, key, G_VALUE_TYPE_NAME(value));
     if (!strcmp(section, "phone")) {
         if (!strcmp(key, CALL_NOTIFICATION_SOUND)) {
-            call_notification_sound = g_value_get_boolean(value);
+            if (G_VALUE_HOLDS_BOOLEAN(value))
+                call_notification_sound = g_value_get_boolean(value);
         }
 
         else if (!strcmp(key, CALL_NOTIFICATION_VIBRATION)) {
-            call_notification_vibration = g_value_get_boolean(value);
+            if (G_VALUE_HOLDS_BOOLEAN(value))
+                call_notification_vibration = g_value_get_boolean(value);
         }
 
         else if (!strcmp(key, CALL_NOTIFICATION_RINGTONE)) {
-            if (call_notification_ringtone != NULL)
-                g_free(call_notification_ringtone);
+            if (G_VALUE_HOLDS_STRING(value)) {
+                if (call_notification_ringtone != NULL)
+                    g_free(call_notification_ringtone);
 
-            call_notification_ringtone = g_strdup(g_value_get_string(value));
+                call_notification_ringtone = g_strdup(g_value_get_string(value));
+            }
         }
     }
 }
@@ -365,7 +370,8 @@ void phone_call_win_call_remove(PhoneCallBlock* call)
 
         elm_button_label_set(bt_speaker, _("Speaker"));
 
-        odeviced_idlenotifier_set_state(IDLE_STATE_IDLE_PRELOCK, NULL, NULL);
+        // FIXME questo non funziona per ora...
+        //odeviced_idlenotifier_set_state(IDLE_STATE_IDLE_PRELOCK, NULL, NULL);
     }
 
     // remove call
@@ -433,7 +439,7 @@ void phone_call_win_call_status(int id, CallStatus status, GHashTable* propertie
 
     } else {
         // sicuramente dobbiamo fermare qualunque notifica
-        call_notification_stop();
+        phone_call_win_notification_stop();
 
         // altre chiamate, cerca in lista e inoltra il segnale
 

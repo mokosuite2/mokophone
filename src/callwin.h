@@ -12,6 +12,12 @@
 #define CALL_NOTIFICATION_VIBRATION     "call_notification_vibration"
 #define CALL_NOTIFICATION_RINGTONE      "call_notification_ringtone"
 
+extern gboolean call_notification_sound;
+extern gboolean call_notification_vibration;
+extern char* call_notification_ringtone;
+
+void phone_call_win_notification_stop(void);
+
 int phone_call_win_num_calls(void);
 
 void phone_call_win_outgoing_call(const char* peer);

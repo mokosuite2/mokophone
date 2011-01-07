@@ -135,7 +135,18 @@ static void _release_callback(GError *error, void *data)
 /* callback pulsante reject */
 static void _reject_clicked(void *data, Evas_Object *obj, void *event_info)
 {
-    ogsmd_call_release(PHONE_CALL_BLOCK(data)->id, _reject_callback, data);
+    int mute = (int) evas_object_data_get(obj, "mute_button");
+
+    // mute button, stop notifications
+    if (mute) {
+        phone_call_win_notification_stop();
+        elm_button_label_set(obj, _("Reject"));
+        evas_object_data_set(obj, "mute_button", (void*) FALSE);
+    }
+
+    // reject call
+    else
+        ogsmd_call_release(PHONE_CALL_BLOCK(data)->id, _reject_callback, data);
 }
 
 /* callback pulsante hold */
@@ -328,8 +339,11 @@ static void configure_call(PhoneCallBlock* call, bool outgoing)
         elm_layout_file_set(call->layout, MOKOPHONE_DATADIR "/theme.edj", "mokosuite/phone/call/incoming");
 
         /* pulsante reject */
+        // FIXME se c'e' una chiamata terminata non chiusa, qua non funziona (e nemmeno la notifica)
+        int mute_button = (call_notification_sound && phone_call_win_num_calls() < 1);
         call->button_reject = elm_button_add(call->parent->win);
-        elm_button_label_set(call->button_reject, _("Reject"));
+        elm_button_label_set(call->button_reject, _(mute_button ? "Mute" : "Reject"));
+        evas_object_data_set(call->button_reject, "mute_button", (void*) mute_button);
 
         evas_object_size_hint_weight_set(call->button_reject, 1.0, 1.0);
 
