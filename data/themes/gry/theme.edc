@@ -1,4 +1,4 @@
-#define SCALE_FACTOR        2
+#define SCALE_FACTOR        1
 #define COLOR_GRAY 150 150 150 255;
 #define COLOR_LIGHT_GRAY 245 245 245 255;
 #define COLOR_DARK_GRAY 79 79 79 255;
@@ -146,8 +146,8 @@ group { name: "elm/genlist/item/call/default";
                 color: 0 0 0 255;
                 color3: 0 0 0 0;
                 text {
-                    font: "redensek";
-                    size: 10;
+                    font: "DroidSans";
+                    size: 12;
                     elipsis: 0.0;
                     min: 0 1;
                     align: 0.0 0.5;
@@ -173,8 +173,8 @@ group { name: "elm/genlist/item/call/default";
                 color: COLOR_DARK_GRAY;
                 color3: 0 0 0 0;
                 text {
-                    font: "redensek";
-                    size: 9;
+                    font: "DroidSans";
+                    size: 10;
                     elipsis: 0.0;
                     min: 0 1;
                     align: 1.0 0.5;
@@ -375,8 +375,8 @@ group { name: "elm/genlist/item/call_sub/default";
                 color: 0 0 0 255;
                 color3: 0 0 0 0;
                 text {
-                    font: "redensek";
-                    size: 10;
+                    font: "DroidSans";
+                    size: 12;
                     elipsis: 0.0;
                     min: 0 1;
                     align: 0.0 1.0;
@@ -404,8 +404,8 @@ group { name: "elm/genlist/item/call_sub/default";
                 color: COLOR_DARK_GRAY;
                 color3: 0 0 0 0;
                 text {
-                    font: "redensek";
-                    size: 9;
+                    font: "DroidSans";
+                    size: 10;
                     elipsis: 0.0;
                     min: 0 1;
                     align: 0.0 0.0;
@@ -431,8 +431,8 @@ group { name: "elm/genlist/item/call_sub/default";
                 color: COLOR_DARK_GRAY;
                 color3: 0 0 0 0;
                 text {
-                    font: "redensek";
-                    size: 9;
+                    font: "DroidSans";
+                    size: 10;
                     elipsis: 0.0;
                     min: 0 1;
                     align: 1.0 0.5;
@@ -585,8 +585,8 @@ group { name: "mokosuite/phone/main";
                 }
                 text {
                     //text: "1";
-                    font: "redensek:style=bold:color=000";
-                    size: 10*SCALE_FACTOR;
+                    font: "DroidSans:style=Bold:color=000";
+                    size: 12*SCALE_FACTOR;
                     align: 0.5 0.5;
                 }
             }
@@ -609,8 +609,8 @@ group { name: "mokosuite/phone/main";
                 }
                 text {
                     //text: "2";
-                    font: "redensek:style=bold";
-                    size: 10*SCALE_FACTOR;
+                    font: "DroidSans:style=Bold";
+                    size: 12*SCALE_FACTOR;
                     align: 0.5 0.5;
                 }
             }
@@ -633,8 +633,8 @@ group { name: "mokosuite/phone/main";
                 }
                 text {
                     //text: "3";
-                    font: "redensek:style=bold";
-                    size: 10*SCALE_FACTOR;
+                    font: "DroidSans:style=Bold";
+                    size: 12*SCALE_FACTOR;
                     align: 0.5 0.5;
                 }
             }
@@ -834,7 +834,7 @@ group { name: "mokosuite/phone/dialer";
                 }
                 text {
                     //text: "12345678";
-                    font: "redensek:style=bold";
+                    font: "DroidSans:style=Bold";
                     size: 15*SCALE_FACTOR;
                     align: 0 0.5;
                 }
@@ -983,8 +983,8 @@ group { name: "mokosuite/phone/call/incoming";
                 }
                 text {
                     text: "(name)";
-                    font: "redensek:style=bold";
-                    size: 10*SCALE_FACTOR;
+                    font: "DroidSans:style=Bold";
+                    size: 12*SCALE_FACTOR;
                     align: 0.0 0.5;
                 }
             }
@@ -1007,8 +1007,8 @@ group { name: "mokosuite/phone/call/incoming";
                 }
                 text {
                     text: "+1234567890";
-                    font: "redensek:style=bold";
-                    size: 10*SCALE_FACTOR;
+                    font: "DroidSans:style=bold";
+                    size: 14*SCALE_FACTOR;
                     align: 0.0 0.5;
                 }
             }
@@ -1126,8 +1126,8 @@ group { name: "mokosuite/phone/call/active";
                 }
                 text {
                     text: "(name)";
-                    font: "redensek:style=bold";
-                    size: 10*SCALE_FACTOR;
+                    font: "DroidSans:style=Bold";
+                    size: 12*SCALE_FACTOR;
                     align: 0.0 0.5;
                 }
             }
@@ -1150,8 +1150,8 @@ group { name: "mokosuite/phone/call/active";
                 }
                 text {
                     text: "+1234567890";
-                    font: "redensek:style=bold";
-                    size: 10*SCALE_FACTOR;
+                    font: "DroidSans:style=Bold";
+                    size: 12*SCALE_FACTOR;
                     align: 0.0 0.5;
                 }
             }
@@ -1174,8 +1174,8 @@ group { name: "mokosuite/phone/call/active";
                 }
                 text {
                     text: "00:00:00";
-                    font: "redensek:style=bold";
-                    size: 10*SCALE_FACTOR;
+                    font: "DroidSans:style=Bold";
+                    size: 12*SCALE_FACTOR;
                     align: 0.0 0.5;
                 }
             }
@@ -1285,7 +1285,7 @@ group { name: "mokosuite/phone/sim_auth";
                 }
                 text {
                     text: "";
-                    font: "redensek";
+                    font: "DroidSans";
                     size: 12*SCALE_FACTOR;
                     // was: 25
                     align: 0.5 0.5;
@@ -1309,7 +1309,7 @@ group { name: "mokosuite/phone/sim_auth";
                 }
                 text {
                     text: "";
-                    font: "redensek";
+                    font: "DroidSans";
                     size: 24*SCALE_FACTOR;
                     // was: 50
                     align: 0.5 0.5;
@@ -1498,8 +1498,8 @@ group { name: "elm/genlist/item/contact/default";
                 color: 0 0 0 255;
                 color3: 0 0 0 0;
                 text {
-                    font: "redensek";
-                    size: 10;
+                    font: "DroidSans";
+                    size: 12;
                     elipsis: 0.0;
                     min: 0 1;
                     align: 0.0 1.0;
@@ -1527,8 +1527,8 @@ group { name: "elm/genlist/item/contact/default";
                 color: COLOR_DARK_GRAY;
                 color3: 0 0 0 0;
                 text {
-                    font: "redensek";
-                    size: 9;
+                    font: "DroidSans";
+                    size: 10;
                     elipsis: 0.0;
                     min: 0 1;
                     align: 0.0 0.0;
@@ -1711,7 +1711,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "1";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -1740,7 +1740,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "2";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -1769,7 +1769,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -1798,7 +1798,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "3";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -1827,7 +1827,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -1932,7 +1932,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "4";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -1959,7 +1959,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -1988,7 +1988,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "5";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -2017,7 +2017,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -2047,7 +2047,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "6";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -2077,7 +2077,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -2183,7 +2183,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "7";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -2210,7 +2210,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -2237,7 +2237,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "8";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -2264,7 +2264,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -2291,7 +2291,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "9";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -2319,7 +2319,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -2423,7 +2423,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "*";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 30*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -2450,7 +2450,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "0";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -2477,7 +2477,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "+";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 12*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -2504,7 +2504,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "#";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -2942,7 +2942,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "1";
-                        font: "redensek:style=bold:color=000";
+                        font: "DroidSans:style=Bold:color=000";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -2966,7 +2966,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "2";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -2990,7 +2990,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -3014,7 +3014,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "3";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -3038,7 +3038,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -3147,7 +3147,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "4";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -3171,7 +3171,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -3195,7 +3195,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "5";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -3219,7 +3219,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -3244,7 +3244,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "6";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -3269,7 +3269,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -3379,7 +3379,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "7";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -3403,7 +3403,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -3427,7 +3427,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "8";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -3451,7 +3451,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -3475,7 +3475,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "9";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -3500,7 +3500,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "";
-                        font: "redensek";
+                        font: "DroidSans";
                         size: 10*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -3610,7 +3610,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "*";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 30*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -3634,7 +3634,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "0";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -3658,7 +3658,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "+";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 12*SCALE_FACTOR;
                         align: 0.5 0.8;
                     }
@@ -3682,7 +3682,7 @@ group { name: "elm/genlist/item/contact/default";
                     }
                     text {
                         text: "#";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 20*SCALE_FACTOR;
                         align: 0.5 0.15;
                     }
@@ -4058,7 +4058,7 @@ group { name: "elm/genlist/item/contact/default";
                     rel2.to: "slider-bg";
                     text {
                         text: "accept";
-                        font: "redensek:style=bold";
+                        font: "DroidSans:style=Bold";
                         size: 18*SCALE_FACTOR;
                         min: 0 1;
                         align: 0.5 0.5;

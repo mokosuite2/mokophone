@@ -9,8 +9,8 @@ make &&
 cd data && sudo make install && cd .. &&
 (
 if [ "$BUS" == "session" ]; then
-DISPLAY=$DISPLAY ELM_FINGER=80 ELM_SCALE=2 ELM_THEME=gry src/mokophone
+DISPLAY=$DISPLAY ELM_FINGER_SIZE=35 ELM_SCALE=1 ELM_THEME=gry src/mokophone
 else
-DISPLAY=$DISPLAY ELM_FINGER=80 ELM_SCALE=2 ELM_THEME=gry DBUS_SYSTEM_BUS_ADDRESS="tcp:host=neo,port=8000" src/mokophone
+DISPLAY=$DISPLAY ELM_FINGER_SIZE=35 ELM_SCALE=1 ELM_THEME=gry DBUS_SYSTEM_BUS_ADDRESS="tcp:host=neo,port=8000" src/mokophone
 fi
 )
