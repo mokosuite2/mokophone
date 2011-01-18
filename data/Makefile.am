@@ -7,7 +7,7 @@ files_DATA = call-end.png call-hold.png call-start.png \
 	log_call-in.png log_call-missed.png log_call-out.png
 
 desktopdir = $(datadir)/applications
-desktop_DATA = mokophone-phone.desktop
+desktop_DATA = mokophone-phone.desktop mokophone-contacts.desktop
 
 bin_SCRIPTS = mokophone-activate.sh
 

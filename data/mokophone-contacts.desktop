@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Contacts
+Name[it]=Contatti
+Comment=Open contacts list
+Comment[it]=Lista contatti
+Exec=mokophone-activate.sh Frontend string:contacts
+Icon=shr-contacts
+Terminal=false
+Type=Application
+Categories=Application;PIM;Office;Bar;
+MimeType=text/x-vcard;
+X-MB-SingleInstance=true
+StartupNotify=true
