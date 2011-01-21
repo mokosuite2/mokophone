@@ -1,4 +1,4 @@
-#define SCALE_FACTOR        1
+#define SCALE_FACTOR        2
 #define COLOR_GRAY 150 150 150 255;
 #define COLOR_LIGHT_GRAY 245 245 245 255;
 #define COLOR_DARK_GRAY 79 79 79 255;
