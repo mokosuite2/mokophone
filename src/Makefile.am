@@ -5,9 +5,22 @@ VALAC_ARGS = \
 	--save-temps \
 	--basedir $(top_srcdir)/src
 
-INCLUDES = $(GLIB_CFLAGS) $(DBUS_CFLAGS) $(ELEMENTARY_CFLAGS) $(FSO_CFLAGS) \
-	$(PHONEUTILS_CFLAGS) $(MOKOSUITE_CFLAGS) $(ALSA_CFLAGS) $(NOTIFY_CFLAGS) \
-	-DLOCALEDIR=\""$(localedir)"\" -DDATADIR=\""$(datadir)"\" -DSYSCONFDIR=\""$(sysconfdir)"\" -Wall
+INCLUDES = \
+	$(GLIB_CFLAGS) \
+	$(DBUS_CFLAGS) \
+	$(ELEMENTARY_CFLAGS) \
+	$(ECORE_CFLAGS) \
+	$(EVAS_CFLAGS) \
+	$(EDJE_CFLAGS) \
+	$(FSO_CFLAGS) \
+	$(PHONEUTILS_CFLAGS) \
+	$(MOKOSUITE_CFLAGS) \
+	$(ALSA_CFLAGS) \
+	$(NOTIFY_CFLAGS) \
+	-DLOCALEDIR=\""$(localedir)"\" \
+	-DDATADIR=\""$(datadir)"\" \
+	-DSYSCONFDIR=\""$(sysconfdir)"\" \
+	-Wall
 
 bin_PROGRAMS = mokophone
 
@@ -46,9 +59,17 @@ mokophone_SOURCES = \
 	sound.h
 
 mokophone_LDADD = \
-	$(GLIB_LIBS) $(DBUS_LIBS) $(ELEMENTARY_LIBS) \
-	$(FSO_LIBS) $(PHONEUTILS_LIBS) $(MOKOSUITE_LIBS) \
-	$(ALSA_LIBS) $(NOTIFY_LIBS)
+	$(GLIB_LIBS) \
+	$(DBUS_LIBS) \
+	$(ELEMENTARY_LIBS) \
+	$(ECORE_LIBS) \
+	$(EVAS_LIBS) \
+	$(EDJE_LIBS) \
+	$(FSO_LIBS) \
+	$(PHONEUTILS_LIBS) \
+	$(MOKOSUITE_LIBS) \
+	$(ALSA_LIBS) \
+	$(NOTIFY_LIBS)
 
 EXTRA_DIST = \
 	$(BUILT_SOURCES) \
